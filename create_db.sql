@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS tests(
     name VARCHAR(255),
     PRIMARY KEY(id)
 );
-INSERT INTO tests (name) VALUES ('tommmaso');
 
 CREATE TABLE IF NOT EXISTS events(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -20,4 +19,3 @@ CREATE TABLE IF NOT EXISTS events(
     time2 TIME,
     PRIMARY KEY(id)
 );
-INSERT INTO events (title, date1) VALUES ('test titolo','2022-12-29');
