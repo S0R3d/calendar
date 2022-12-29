@@ -1,12 +1,18 @@
 # Calendar
-TODO:
-creare il database
-creare tabella 'event' come sotto riportato
 
-Evento - *:obbiligatori per creare l'evento ed aggiungerlo al db
+- Struttura 'event' in 'events' - 
 *id: identificativo dell'evento nel db, numero intero non negativo, non ripetibile , chiave del db
 *title: titolo dell'evento, nome dell'evento, stringa di caratteri, anche ripetibile
 *date1: data inizio dell'evento (DD/MM/YYYY)
 date2: data fine dell'evento (DD/MM/YYYY), se non presente l'evento non si ripete in piu giorni
 time1: ora inizio dell'evento (HH::MM)
 time2: ora fine dell'evento (HH::MM)
+extra-
+remind: datetime data completa con tempo di un eventuale promemoria dell'evento
+changes: datetime data completa con ora di eventuali cambiamenti
+
+TODO:
+PRIMARY-KEY ccomposta
+fare layout calendario
+aggiungere interazione con il database
+aggiungere gli 'extra' points
