@@ -1,5 +1,8 @@
-CREATE DATABASE calendar;
+CREATE DATABASE IF NOT EXISTS calendar;
 USE calendar;
+
+DROP TABLE IF EXISTS tests;
+DROP TABLE IF EXISTS events;
 
 CREATE TABLE IF NOT EXISTS tests(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -17,4 +20,4 @@ CREATE TABLE IF NOT EXISTS events(
     time2 TIME,
     PRIMARY KEY(id)
 );
-INSERT INTO tests (title, date1) VALUES ('test titolo','2022-12-29');
+INSERT INTO events (title, date1) VALUES ('test titolo','2022-12-29');
