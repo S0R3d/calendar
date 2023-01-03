@@ -74,31 +74,49 @@ function translateDay($day): string {
 </head>
 
 <body>
+    <!-- import header -->
     <div class="main">
         <div class="calendar month january"
             style="display: grid; grid-template-columns: repeat(7, auto); text-align: center;">
             <?php
-            $sunday = 1;
-            for ($i = 0; $i < convertMonth(date('m')); $i++) {
-                if ($sunday == 7) {
-                    ?>
-                    <div class="day sunday" style="color: red;">ciao</div>
+            $sunday = 0;
+            for ($i = 1; $i < convertMonth(date('m')) + 1; $i++) {
+
+                ?>
+                <div class="day<?php echo ($i % 7 == 0) ? ' sunday' : ''; ?>">
                     <?php
-                    $sunday = 1;
-                } else {
-                    ++$sunday;
+                    // FIXME: rimuovere query da div.day perche non tutti i giorni hanno un evento
+                    // aggiungere invece numero e nome del gioni in questione fino al 31th
+                    foreach ($db->query('SELECT * FROM events WHERE id='.$i.'') as $row) {
+                        ?>
+                        <div class=" event">
+                            <div class="title">
+                                <?php echo $row['title']; ?>
+                            </div>
+                            <div class="start">
+                                Start at: <?php echo $row['start']; ?>
+                            </div>
+                            <div class="finish">
+                                Finish at: <?php echo $row['finish']; ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
                     ?>
-                    <div class="day">ciao</div>
-                    <?php
-                }
+                </div>
+                <?php
             }
             ?>
         </div>
+        <hr>
+        <!-- TODO: aggiungere all'interno del calendario 'sopra' gli eventi dei giorni giusti,
+                    solo del mese selezionato -->
+        <!-- TODO: calendario con mese di base (di default) in base al mese corrente, usare _today -->
         <div class="events" style="display: flex; margin: 10px;">
             <?php
             foreach ($db->query('SELECT * FROM events LIMIT 3') as $row) {
                 ?>
-                <div class="event" style="margin: 5px;">
+                <div class="event">
                     <div class="title">
                         <?php echo $row['title']; ?>
                     </div>
@@ -109,11 +127,11 @@ function translateDay($day): string {
                         Finish time: <?php echo $row['finish']; ?>
                     </div>
                 </div>
-                <!-- <hr> -->
                 <?php
             } ?>
         </div>
     </div>
+    <!-- import footer -->
     <script src="script/main.js"></script>
 </body>
 
