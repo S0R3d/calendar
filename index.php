@@ -4,52 +4,52 @@ require_once 'php/table.php';
 ?>
 <?php
 date_default_timezone_set('Europe/Rome');
-define('_today', date('l\ Y-m-d H:i:s'));
+define('_today', date('l\ Y-M-d H:i:s'));
 $TYPE_SETS = [
     'completo',
     'non completo',
     'non completo piu giorni',
     'completo piu giorni'
 ];
-function convertMonth($month): int {
+function convMonthinDays(string $month): int {
     switch ($month) {
-        case 'Gennaio' || '1' || '01':
+        case 'Gennaio' || 'January' || 'Jen' || '1' || '01':
             return 31;
-        case 'Febbrario' || '2' || '02':
+        case 'Febbrario' || 'February' || 'Feb' || '2' || '02':
             return 28;
-        case 'Marzo' || '3' || '03':
+        case 'Marzo' || 'March' || 'Mar' || '3' || '03':
             return 31;
-        case 'Aprile' || '4' || '04':
+        case 'Aprile' || 'April' || 'Apr' || '4' || '04':
             return 30;
-        case 'Maggio' || '5' || '05':
+        case 'Maggio' || 'May' || '5' || '05':
             return 31;
-        case 'Giugno' || '6' || '06':
+        case 'Giugno' || 'June' || 'Jun' || '6' || '06':
             return 30;
-        case 'Luglio' || '7' || '07':
+        case 'Luglio' || 'July' || 'Jul' || '7' || '07':
             return 31;
-        case 'Agosto' || '8' || '08':
+        case 'Agosto' || 'August' || 'Aug' || '8' || '08':
             return 31;
-        case 'Settembre' || '9' || '09':
+        case 'Settembre' || 'September' || 'Sep' || '9' || '09':
             return 30;
-        case 'Ottobre' || '10':
+        case 'Ottobre' || 'October' || 'Oct' || '10':
             return 31;
-        case 'Novembre' || '11':
+        case 'Novembre' || 'November' || 'Nov' || '11':
             return 30;
-        case 'Dicembre' || '12':
+        case 'Dicembre' || 'December' || 'Dec' || '12':
             return 31;
         default:
             return 1;
     }
 }
-function translateDay($day): string {
+function translateDays($day): string {
     switch ($day):
         case 'Monday' or 'monday':
             return 'Lunedi';
         case 'Tuesday' or 'tuesday':
             return 'Martedi';
-        case 'Wensday' or 'wensday':
+        case 'Wednsday' or 'wensday':
             return 'Mercoledi';
-        case 'Thusday' or 'thusday':
+        case 'Thursday' or 'thursday':
             return 'Giovedi';
         case 'Friday' or 'friday':
             return 'Venerdi';
@@ -75,39 +75,81 @@ function translateDay($day): string {
 
 <body>
     <!-- import header -->
+    <?php include('php/header.php'); ?>
+
     <div class="main">
-        <div class="calendar month january"
+        <div class="calendar">
+            <!-- TODO: creare una funzione php o js che generi i mesi con i giorni all interno -->
+            <!-- TODO: gli eventi gia presenti nel db comè che sono inseriti dei giorni? -->
+
+            <div class="month january"
+                style="display: grid; grid-template-columns: repeat(7,auto); text-align: center;">
+                <div class="day 01">
+                    <div class="day-name">Mon</div>
+                    <div class="day-numb">01</div>
+                </div>
+                <div class="day 02">
+                    <div class="day-name">Tue</div>
+                    <div class="day-numb">02</div>
+                </div>
+                <div class="day">Wed 03</div>
+                <div class="day">Thu 04</div>
+                <div class="day">Fri 05</div>
+                <div class="day">Sat 06</div>
+                <div class="day sunday">Sun 07</div>
+                <div class="day 08">
+                    <div class="day-name">Mon</div>
+                    <div class="day-numb">08</div>
+                </div>
+                <div class="day">Tue 09</div>
+                <div class="day">Wed 10</div>
+                <div class="day">Thu 11</div>
+                <div class="day">Fri 12</div>
+                <div class="day">Sat 13</div>
+                <div class="day sunday">Sun 14</div>
+                <div class="day 15">
+                    <div class="day-name">Mon</div>
+                    <div class="day-numb">15</div>
+                </div>
+                <div class="day">Tue</div>
+                <div class="day">Wed</div>
+                <div class="day">Thu</div>
+                <div class="day">Fri</div>
+                <div class="day">Sat</div>
+                <div class="day sunday">Sun</div>
+                <div class="day 22">
+                    <div class="day-name">Mon</div>
+                    <div class="day-numb">22</div>
+                </div>
+                <div class="day">Tue</div>
+                <div class="day">Wed</div>
+                <div class="day">Thu</div>
+                <div class="day">Fri</div>
+                <div class="day">Sat 27</div>
+                <div class="day sunday">Sun 28</div>
+                <div class="day 29">
+                    <div class="day-name">Mon</div>
+                    <div class="day-numb">29</div>
+                </div>
+                <div class="day">Tue 30</div>
+                <div class="day">Wed 31</div>
+            </div>
+        </div>
+        <hr>
+
+
+        <!-- <div class="calendar month <?php ?>"
             style="display: grid; grid-template-columns: repeat(7, auto); text-align: center;">
             <?php
-            $sunday = 0;
-            for ($i = 1; $i < convertMonth(date('m')) + 1; $i++) {
-
-                ?>
-                <div class="day<?php echo ($i % 7 == 0) ? ' sunday' : ''; ?>">
-                    <?php
-                    // FIXME: rimuovere query da div.day perche non tutti i giorni hanno un evento
-                    // aggiungere invece numero e nome del gioni in questione fino al 31th
-                    foreach ($db->query('SELECT * FROM events WHERE id='.$i.'') as $row) {
-                        ?>
-                        <div class=" event">
-                            <div class="title">
-                                <?php echo $row['title']; ?>
-                            </div>
-                            <div class="start">
-                                Start at: <?php echo $row['start']; ?>
-                            </div>
-                            <div class="finish">
-                                Finish at: <?php echo $row['finish']; ?>
-                            </div>
-                        </div>
-                        <?php
-                    }
-                    ?>
-                </div>
-                <?php
-            }
+            // for ($i = 1; $i < convMonthinDays(date('m')) + 1; ++$i) {
             ?>
-        </div>
+                <div class="day<?php //echo ($i % 7 == 0) ? ' sunday' : ''; ?>">Day
+                    <?php //echo $i; ?>
+                </div>
+            <?php
+            // }
+            ?>
+        </div> -->
         <hr>
         <!-- TODO: aggiungere all'interno del calendario 'sopra' gli eventi dei giorni giusti,
                     solo del mese selezionato -->
@@ -127,12 +169,14 @@ function translateDay($day): string {
                         Finish time: <?php echo $row['finish']; ?>
                     </div>
                 </div>
-                <?php
+            <?php
             } ?>
         </div>
     </div>
     <!-- import footer -->
+    <?php include('php/footer.php'); ?>
     <script src="script/main.js"></script>
+    <script src="script/month.js"></script>
 </body>
 
 </html>
