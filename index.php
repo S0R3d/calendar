@@ -64,7 +64,6 @@ function translateDays($day): string {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -72,17 +71,17 @@ function translateDays($day): string {
     <title>Tommi's Calendar</title>
     <link rel="stylesheet" href="style/main.css">
 </head>
-
 <body>
     <!-- import header -->
     <?php include('php/header.php'); ?>
 
     <div class="main">
         <div class="calendar">
-            <!-- TODO: creare una funzione php o js che generi i mesi con i giorni all interno -->
+            <!-- TODO: creare una funzione php che generi i mesi con i giorni e all interno gli eventi, 
+                        seguire le specifiche corrette per la manipolazione tramite js-->
             <!-- TODO: gli eventi gia presenti nel db comè che sono inseriti dei giorni? -->
 
-            <div class="month january"
+            <!-- <div class="month january"
                 style="display: grid; grid-template-columns: repeat(7,auto); text-align: center;">
                 <div class="day 01">
                     <div class="day-name">Mon</div>
@@ -133,7 +132,7 @@ function translateDays($day): string {
                 </div>
                 <div class="day">Tue 30</div>
                 <div class="day">Wed 31</div>
-            </div>
+            </div> -->
         </div>
         <hr>
 
@@ -178,5 +177,4 @@ function translateDays($day): string {
     <script src="script/main.js"></script>
     <script src="script/month.js"></script>
 </body>
-
 </html>

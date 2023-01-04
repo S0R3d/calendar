@@ -3,7 +3,7 @@
         <span>logo</span>
     </div>
     <span>header</span>
-    <div class="today-botton">
+    <div class="today-button">
         <button>
             <span>today</span>
         </button>

@@ -21,11 +21,14 @@ let pageCurrentMonthYear = [now.getMonth(), now.getFullYear()];
 console.log("Page current date: " + pageCurrentMonthYear.toString());
 
 // insert month and year in header section
-const monthYear = document.querySelector("div.month.year");
-monthYear.innerHTML = `${pageCurrentMonthYear}`;
+const changeHeaderMonthYear = () => {
+  const monthYear = document.querySelector("div.month.year");
+  monthYear.innerHTML = `${pageCurrentMonthYear}`;
+}
+changeHeaderMonthYear();
 
 // loading page with corrent month
-// TODO: create funtion to loding month
+// TODO: create function to loding month
 const calendar = document.querySelector("div.calendar");
 const month = document.createElement("div");
 month.className = "month";
@@ -39,27 +42,45 @@ for (let i = 1; i < monthDays[pageCurrentMonthYear[0]] + 1; ++i) {
 }
 calendar.appendChild(month);
 
+// FIXME: rimuovere ridondanze 
+// TODO: aggiungere i cambiamenti sul calendario in base al mese selezionato 
+//        (FORSE NON SERVE) perchè rifaccio tutto in php
+// TODO: use js and ajax per eseguire script php per modificare/aggiungere gli eventi persenti del db all' interno
+//        del calendario
 const nextMonth = document.querySelector("div.right-arrow");
 if (nextMonth) {
-  nextMonth.addEventListener("click", (e) => {
+  nextMonth.addEventListener("click", () => {
     if (pageCurrentMonthYear[0] == 11) {
       pageCurrentMonthYear[0] = 0;
       pageCurrentMonthYear[1] += 1;
+      changeHeaderMonthYear();
     } else {
       pageCurrentMonthYear[0] += 1;
       pageCurrentMonthYear[1];
+      changeHeaderMonthYear();
     }
   });
-} else console.error("Not Found Button Next Month!");
+} else console.error("Not Found Button 'Next Month'!");
+
 const previousMonth = document.querySelector("div.left-arrow");
 if (previousMonth) {
-  previousMonth.addEventListener("click", (e) => {
+  previousMonth.addEventListener("click", () => {
     if (pageCurrentMonthYear[0] == 0) {
       pageCurrentMonthYear[0] = 11;
       pageCurrentMonthYear[1] -= 1;
+      changeHeaderMonthYear();
     } else {
       pageCurrentMonthYear[0] -= 1;
       pageCurrentMonthYear[1];
+      changeHeaderMonthYear();
     }
   });
-} else console.error("Not Found Button Previous Month!");
+} else console.error("Not Found Button 'Previous Month'!");
+
+const today = document.querySelector("div.today-button");
+if (today) {
+  today.addEventListener("click", () => {
+    pageCurrentMonthYear = [now.getMonth(), now.getFullYear()];
+    changeHeaderMonthYear();
+  })
+} else console.error("Not Found Button 'Today'");
