@@ -1,17 +1,22 @@
 <header style="display: flex;">
-    <span>Header</span>
+    <div class="logo">
+        <span>logo</span>
+    </div>
+    <span>header</span>
     <div class="today-botton">
         <button>
-            today
+            <span>today</span>
         </button>
     </div>
-    <div class="arrow-left">
+    <div class="left-arrow">
         <button>
-            < </button>
+            <span>
+                < </span>
+        </button>
     </div>
-    <div class="arrow-right">
+    <div class="right-arrow">
         <button>
-            >
+            <span> > </span>
         </button>
     </div>
     <div class="month year">Gennaio 2023</div>
