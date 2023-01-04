@@ -8,7 +8,7 @@ try {
             PRIMARY KEY(id)
             )');
 } catch (PDOException $th) {
-    echo 'Error massage: ' . $th;
+    echo 'Error massage: '.$th;
     die();
 }
 ?>
