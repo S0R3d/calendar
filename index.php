@@ -1,10 +1,11 @@
 <?php
 require_once 'php/conn.php';
 require_once 'php/table.php';
-?>
-<?php
+
 date_default_timezone_set('Europe/Rome');
 define('_today', date('l\ Y-M-d H:i:s'));
+define('_currentDate', date('l\ Y-M-d H:i:s'));
+
 $TYPE_SETS = [
     'completo',
     'non completo',
@@ -77,78 +78,33 @@ function translateDays($day): string {
 
     <div class="main">
         <div class="calendar">
-            <!-- TODO: creare una funzione php che generi i mesi con i giorni e all interno gli eventi, 
-                        seguire le specifiche corrette per la manipolazione tramite js-->
-            <!-- TODO: gli eventi gia presenti nel db comè che sono inseriti dei giorni? -->
-
-            <!-- <div class="month january"
-                style="display: grid; grid-template-columns: repeat(7,auto); text-align: center;">
-                <div class="day 01">
-                    <div class="day-name">Mon</div>
-                    <div class="day-numb">01</div>
-                </div>
-                <div class="day 02">
-                    <div class="day-name">Tue</div>
-                    <div class="day-numb">02</div>
-                </div>
-                <div class="day">Wed 03</div>
-                <div class="day">Thu 04</div>
-                <div class="day">Fri 05</div>
-                <div class="day">Sat 06</div>
-                <div class="day sunday">Sun 07</div>
-                <div class="day 08">
-                    <div class="day-name">Mon</div>
-                    <div class="day-numb">08</div>
-                </div>
-                <div class="day">Tue 09</div>
-                <div class="day">Wed 10</div>
-                <div class="day">Thu 11</div>
-                <div class="day">Fri 12</div>
-                <div class="day">Sat 13</div>
-                <div class="day sunday">Sun 14</div>
-                <div class="day 15">
-                    <div class="day-name">Mon</div>
-                    <div class="day-numb">15</div>
-                </div>
-                <div class="day">Tue</div>
-                <div class="day">Wed</div>
-                <div class="day">Thu</div>
-                <div class="day">Fri</div>
-                <div class="day">Sat</div>
-                <div class="day sunday">Sun</div>
-                <div class="day 22">
-                    <div class="day-name">Mon</div>
-                    <div class="day-numb">22</div>
-                </div>
-                <div class="day">Tue</div>
-                <div class="day">Wed</div>
-                <div class="day">Thu</div>
-                <div class="day">Fri</div>
-                <div class="day">Sat 27</div>
-                <div class="day sunday">Sun 28</div>
-                <div class="day 29">
-                    <div class="day-name">Mon</div>
-                    <div class="day-numb">29</div>
-                </div>
-                <div class="day">Tue 30</div>
-                <div class="day">Wed 31</div>
-            </div> -->
+            <!-- insert days bye JS -->
         </div>
         <hr>
-
-
-        <!-- <div class="calendar month <?php ?>"
-            style="display: grid; grid-template-columns: repeat(7, auto); text-align: center;">
-            <?php
-            // for ($i = 1; $i < convMonthinDays(date('m')) + 1; ++$i) {
-            ?>
-                <div class="day<?php //echo ($i % 7 == 0) ? ' sunday' : ''; ?>">Day
-                    <?php //echo $i; ?>
-                </div>
-            <?php
-            // }
-            ?>
-        </div> -->
+        <div class="calendar">
+            <div class="month" style="display: grid; grid-template-columns: repeat(7, auto); text-align: center;">
+                <?php
+                for ($i = 1; $i < convMonthinDays(date('m')) + 1; ++$i) {
+                    ?>
+                    <div class="day<?php echo ($i % 7 == 0) ? ' sunday' : ''; ?>">
+                        <?php
+                        $start = "2023-01-01";
+                        $query = "SELECT * FROM events WHERE start = :start LIMIT 1";
+                        $state = $db->prepare($query);
+                        $state->execute(['start' => $start]);
+                        $data = $state->fetchAll();
+                        ?>
+                        <div class="event">
+                            <div class="title">
+                                <?php echo $data[0]['title']; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
         <hr>
         <!-- TODO: aggiungere all'interno del calendario 'sopra' gli eventi dei giorni giusti,
                     solo del mese selezionato -->
@@ -174,6 +130,7 @@ function translateDays($day): string {
     </div>
     <!-- import footer -->
     <?php include('php/footer.php'); ?>
+
     <script src="script/main.js"></script>
     <script src="script/month.js"></script>
 </body>

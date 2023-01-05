@@ -53,12 +53,11 @@ if (nextMonth) {
     if (pageCurrentMonthYear[0] == 11) {
       pageCurrentMonthYear[0] = 0;
       pageCurrentMonthYear[1] += 1;
-      changeHeaderMonthYear();
     } else {
       pageCurrentMonthYear[0] += 1;
       pageCurrentMonthYear[1];
-      changeHeaderMonthYear();
     }
+    changeHeaderMonthYear();
   });
 } else console.error("Not Found Button 'Next Month'!");
 
@@ -68,12 +67,11 @@ if (previousMonth) {
     if (pageCurrentMonthYear[0] == 0) {
       pageCurrentMonthYear[0] = 11;
       pageCurrentMonthYear[1] -= 1;
-      changeHeaderMonthYear();
     } else {
       pageCurrentMonthYear[0] -= 1;
       pageCurrentMonthYear[1];
-      changeHeaderMonthYear();
     }
+    changeHeaderMonthYear();
   });
 } else console.error("Not Found Button 'Previous Month'!");
 
