@@ -4,14 +4,19 @@ require_once 'php/table.php';
 
 date_default_timezone_set('Europe/Rome');
 define('_today', date('l\ Y-M-d H:i:s'));
-define('_currentDate', date('l\ Y-M-d H:i:s'));
-
-$TYPE_SETS = [
+$_currentDate = array(
+    'Y' => date('Y'),
+    'm' => date('m')
+);
+$months = array(
+    "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
+);
+$TYPE_SETS = array(
     'completo',
     'non completo',
     'non completo piu giorni',
     'completo piu giorni'
-];
+);
 function convMonthinDays(string $month): int {
     switch ($month) {
         case 'Gennaio' || 'January' || 'Jen' || '1' || '01':
@@ -71,6 +76,9 @@ function translateDays($day): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tommi's Calendar</title>
     <link rel="stylesheet" href="style/main.css">
+    <!-- <script src="script/jquery-3.6.3.slim.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
+        integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- import header -->
@@ -78,27 +86,34 @@ function translateDays($day): string {
 
     <div class="main">
         <div class="calendar">
-            <!-- insert days bye JS -->
-        </div>
-        <hr>
-        <div class="calendar">
-            <div class="month" style="display: grid; grid-template-columns: repeat(7, auto); text-align: center;">
+            <!-- TODO: modificare gli eventi in base al mese/anno selezionato-->
+            <div class="month <?php echo $months[$_currentDate['m'] - 1] ?>"
+                style="display: grid; grid-template-columns: repeat(7, auto); text-align: center;">
                 <?php
                 for ($i = 1; $i < convMonthinDays(date('m')) + 1; ++$i) {
                     ?>
                     <div class="day<?php echo ($i % 7 == 0) ? ' sunday' : ''; ?>">
                         <?php
-                        $start = "2023-01-01";
-                        $query = "SELECT * FROM events WHERE start = :start LIMIT 1";
+                        $start = $_currentDate['Y']."-".$_currentDate['m']."-".$i;
+                        $query = "SELECT * FROM events WHERE sDate = :start LIMIT 1";
                         $state = $db->prepare($query);
                         $state->execute(['start' => $start]);
                         $data = $state->fetchAll();
-                        ?>
-                        <div class="event">
-                            <div class="title">
-                                <?php echo $data[0]['title']; ?>
+                        if (sizeof($data)) {
+                            ?>
+                            <div class="event">
+                                <div class="title">
+                                    <?php echo $data[0]['title']; ?>
+                                </div>
                             </div>
-                        </div>
+                        <?php
+                        } else {
+                            ?>
+                            day <?php echo $i; ?>
+                            <div class="event"></div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 <?php
                 }
@@ -106,22 +121,32 @@ function translateDays($day): string {
             </div>
         </div>
         <hr>
-        <!-- TODO: aggiungere all'interno del calendario 'sopra' gli eventi dei giorni giusti,
-                    solo del mese selezionato -->
         <!-- TODO: calendario con mese di base (di default) in base al mese corrente, usare _today -->
         <div class="events" style="display: flex; margin: 10px;">
             <?php
             foreach ($db->query('SELECT * FROM events LIMIT 3') as $row) {
                 ?>
-                <div class="event">
+                <div class="event" style="text-align: center;">
                     <div class="title">
                         <?php echo $row['title']; ?>
                     </div>
-                    <div class="start">
-                        Start time: <?php echo $row['start']; ?>
+                    <div class="start-at">
+                        Start at:
+                        <div class="date">
+                            <?php echo $row['sDate']; ?>
+                        </div>
+                        <div class="time">
+                            <?php echo $row['sDate']; ?>
+                        </div>
                     </div>
-                    <div class="finish">
-                        Finish time: <?php echo $row['finish']; ?>
+                    <div class="finish-at">
+                        Finish at:
+                        <div class="date">
+                            <?php echo $row['fDate']; ?>
+                        </div>
+                        <div class="time">
+                            <?php echo $row['fDate']; ?>
+                        </div>
                     </div>
                 </div>
             <?php
