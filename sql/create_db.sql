@@ -8,7 +8,9 @@ DROP TABLE IF EXISTS `events`;
 CREATE TABLE IF NOT EXISTS `events`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
-    `start` DATETIME NOT NULL,
-    `finish` DATETIME NOT NULL,
+    `sDate` DATE NOT NULL,
+    `sTime` TIME,
+    `fDate` DATE NOT NULL,
+    `fTime` TIME,
     PRIMARY KEY(`id`)
 );
