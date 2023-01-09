@@ -1,8 +1,8 @@
 <header style="display: flex;">
+    <span>header</span>
     <div class="logo">
         <span>logo</span>
     </div>
-    <span>header</span>
     <div class="today-button">
         <button>
             <span>today</span>
@@ -19,5 +19,7 @@
             <span> > </span>
         </button>
     </div>
-    <div class="month year">Gennaio 2023</div>
+    <div class="header-month header-year">
+        <?php echo Date('M-Y'); ?>
+    </div>
 </header>
