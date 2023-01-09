@@ -6,16 +6,18 @@ date_default_timezone_set('Europe/Rome');
 define('_today', date('l\ Y-M-d H:i:s'));
 $_currentDate = array(
     'Y' => date('Y'),
-    'm' => date('m')
+    'm' => date('m'),
+    'd' => date('d'),
+    'l' => date('l')
 );
 $months = array(
     "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
 );
 $TYPE_SETS = array(
-    'completo',
-    'non completo',
-    'non completo piu giorni',
-    'completo piu giorni'
+    ' completo',
+    ' non completo',
+    ' non completo piu giorni',
+    ' completo piu giorni'
 );
 function convMonthinDays(string $month): int {
     switch ($month) {
@@ -75,30 +77,40 @@ function translateDays($day): string {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tommi's Calendar</title>
-    <link rel="stylesheet" href="style/main.css">
-    <!-- <script src="script/jquery-3.6.3.slim.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
         integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
-</head>
-<body>
-    <!-- import header -->
-    <?php include('php/header.php'); ?>
 
+    <!-- <script src="script/jquery-3.6.3.slim.min.js"></script> -->
+    <link rel="stylesheet" href="style/main.css">
+</head>
+<body onload="bodyOnLoad()">
     <div class="main">
+        <?php include('php/header.php'); ?>
+
         <div class="calendar">
-            <!-- TODO: modificare gli eventi in base al mese/anno selezionato-->
-            <div class="month <?php echo $months[$_currentDate['m'] - 1] ?>"
-                style="display: grid; grid-template-columns: repeat(7, auto); text-align: center;">
+            <!-- FIXME: modificare gli eventi in base al mese/anno selezionato-->
+            <div class="month <?php echo $months[$_currentDate['m'] - 1] ?>">
                 <?php
+                // TODO: caricare 35 giorni anche se eccedono il mese per non lasciare buchi
                 for ($i = 1; $i < convMonthinDays(date('m')) + 1; ++$i) {
+                    // FIXME: il primo giorno del mese potrebbe non essere LUNEDI,
+                    //        inserire il 'day' al posto giusto
                     ?>
-                    <div class="day<?php echo ($i % 7 == 0) ? ' sunday' : ''; ?>">
+                    <div class="day<?php echo ($i % 7 == 0) ? ' sunday' : ''; ?>" id="<?php echo $i; ?>">
                         <?php
                         $start = $_currentDate['Y']."-".$_currentDate['m']."-".$i;
+                        // FIXME: Remove 'LIMIT 1' ci possono essere piu eventi del giorno
+                        // FIXME: TODO: DATABASE VUOTO
                         $query = "SELECT * FROM events WHERE sDate = :start LIMIT 1";
                         $state = $db->prepare($query);
                         $state->execute(['start' => $start]);
                         $data = $state->fetchAll();
+                        ?>
+                        <div class="date">
+                            <div class="date-name"></div>
+                            <div class="date-numb"></div>
+                        </div>
+                        <?php
                         if (sizeof($data)) {
                             ?>
                             <div class="event">
@@ -109,7 +121,7 @@ function translateDays($day): string {
                         <?php
                         } else {
                             ?>
-                            day <?php echo $i; ?>
+                            <!-- day <?php echo $i; ?> -->
                             <div class="event"></div>
                         <?php
                         }
@@ -120,43 +132,10 @@ function translateDays($day): string {
                 ?>
             </div>
         </div>
-        <hr>
-        <!-- TODO: calendario con mese di base (di default) in base al mese corrente, usare _today -->
-        <div class="events" style="display: flex; margin: 10px;">
-            <?php
-            foreach ($db->query('SELECT * FROM events LIMIT 3') as $row) {
-                ?>
-                <div class="event" style="text-align: center;">
-                    <div class="title">
-                        <?php echo $row['title']; ?>
-                    </div>
-                    <div class="start-at">
-                        Start at:
-                        <div class="date">
-                            <?php echo $row['sDate']; ?>
-                        </div>
-                        <div class="time">
-                            <?php echo $row['sDate']; ?>
-                        </div>
-                    </div>
-                    <div class="finish-at">
-                        Finish at:
-                        <div class="date">
-                            <?php echo $row['fDate']; ?>
-                        </div>
-                        <div class="time">
-                            <?php echo $row['fDate']; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php
-            } ?>
-        </div>
-    </div>
-    <!-- import footer -->
-    <?php include('php/footer.php'); ?>
 
-    <script src="script/main.js"></script>
+        <?php include('php/footer.php'); ?>
+    </div>
+
     <script src="script/month.js"></script>
 </body>
 </html>
