@@ -1,4 +1,4 @@
-<header style="display: flex;">
+<header>
     <span>header</span>
     <div class="logo">
         <span>logo</span>
