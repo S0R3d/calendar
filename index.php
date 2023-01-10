@@ -5,19 +5,16 @@ require_once 'php/table.php';
 date_default_timezone_set('Europe/Rome');
 define('_today', date('l\ Y-M-d H:i:s'));
 $_currentDate = array(
-    'Y' => date('Y'),
-    'm' => date('m'),
+    'l' => date('l'),
     'd' => date('d'),
-    'l' => date('l')
+    'm' => date('m'),
+    'Y' => date('Y'),
+);
+$daysName = array(
+    0 => "Sun", 1 => "Mon", 2 => "Tue", 3 => "Wed", 4 => "Thu", 5 => "Fri", 6 => "Sat",
 );
 $months = array(
     "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
-);
-$TYPE_SETS = array(
-    ' completo',
-    ' non completo',
-    ' non completo piu giorni',
-    ' completo piu giorni'
 );
 function convMonthinDays(string $month): int {
     switch ($month) {
@@ -88,46 +85,13 @@ function translateDays($day): string {
         <?php include('php/header.php'); ?>
 
         <div class="calendar">
+            <!-- TODO: rimuovere il nome dei giorni dai riquadri e fare una riga in alto solo per loro -->
+            <!-- <div class="dayName"></div> -->
             <!-- FIXME: modificare gli eventi in base al mese/anno selezionato-->
-            <div class="month <?php echo $months[$_currentDate['m'] - 1] ?>">
+            <div class="month">
                 <?php
-                // TODO: caricare 35 giorni anche se eccedono il mese per non lasciare buchi
-                for ($i = 1; $i < convMonthinDays(date('m')) + 1; ++$i) {
-                    // FIXME: il primo giorno del mese potrebbe non essere LUNEDI,
-                    //        inserire il 'day' al posto giusto
-                    ?>
-                    <div class="day<?php echo ($i % 7 == 0) ? ' sunday' : ''; ?>" id="<?php echo $i; ?>">
-                        <?php
-                        $start = $_currentDate['Y']."-".$_currentDate['m']."-".$i;
-                        // FIXME: Remove 'LIMIT 1' ci possono essere piu eventi del giorno
-                        // FIXME: TODO: DATABASE VUOTO
-                        $query = "SELECT * FROM events WHERE sDate = :start LIMIT 1";
-                        $state = $db->prepare($query);
-                        $state->execute(['start' => $start]);
-                        $data = $state->fetchAll();
-                        ?>
-                        <div class="date">
-                            <div class="date-name"></div>
-                            <div class="date-numb"></div>
-                        </div>
-                        <?php
-                        if (sizeof($data)) {
-                            ?>
-                            <div class="event">
-                                <div class="title">
-                                    <?php echo $data[0]['title']; ?>
-                                </div>
-                            </div>
-                        <?php
-                        } else {
-                            ?>
-                            <!-- day <?php echo $i; ?> -->
-                            <div class="event"></div>
-                        <?php
-                        }
-                        ?>
-                    </div>
-                <?php
+                for ($i = 1; $i < 42 + 1; $i++) {
+                    include('php/day.php');
                 }
                 ?>
             </div>
