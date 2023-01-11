@@ -85,22 +85,21 @@ function translateDays($day): string {
     <div class="main">
         <?php include('php/header.php'); ?>
 
-        <div class="calendar">
+        <div class="calendar month">
             <!-- TODO: rimuovere il nome dei giorni dai riquadri e fare una riga in alto solo per loro -->
-            <!-- <div class="dayName"></div> -->
+            <!-- <div class="dayNames"></div> -->
 
             <!-- FIXME: modificare gli eventi in base al mese/anno selezionato-->
             <!-- TODO: aggiungere script per gli eventi -->
-            <div class="month">
-                <!-- IMPORTANTE IN QUESTA SEZIONE SI EGEUONO SCRIPT JS  -->
-                <?php
-                for ($i = 1; $i < 42 + 1; $i++) {
-                    include('php/day.php');
-                }
-                ?>
-            </div>
+            <!-- <div class="month"> -->
+            <!-- IMPORTANTE IN QUESTA SEZIONE SI EGEUONO SCRIPT JS  -->
+            <?php
+            for ($i = 1; $i < 42 + 1; $i++) {
+                include('php/day.php');
+            }
+            ?>
+            <!-- </div> -->
         </div>
-        <div class="here"></div>
 
         <?php include('php/footer.php'); ?>
     </div>
