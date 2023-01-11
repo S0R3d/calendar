@@ -37,24 +37,11 @@ function changeHeaderMonthYear() {
 }
 changeHeaderMonthYear();
 
-// Non utilizzata
-function loadCalendar() {
-  const calendar = document.querySelector("div.calendar");
-  const month = document.createElement("div");
-  month.className = "month " + months[pageCurrentMonthYear[0]];
-  month.style =
-    "display: grid; grid-template-columns: repeat(7,auto); text-align: center;";
-  for (let i = 1; i < monthDays[pageCurrentMonthYear[0]] + 1; ++i) {
-    const day = document.createElement("div");
-    day.className = i % 7 == 0 ? "day sunday" : "day";
-    day.innerHTML = `${i}`;
-    month.appendChild(day);
-  }
-  calendar.appendChild(month);
+function resetCurrent() {
+  pageCurrentMonthYear = [now.getFullYear(), now.getMonth() + 1];
 }
 
-// TODO: riempire le caselle della grid con il nome e il numero del giorno
-//        nella posizione corretta (casella identificata con numero in 'id')
+// TODO: eseguire questa funzione insieme agli script php per gli eventi
 function dayNameGenerator() {
   const days = document.querySelectorAll("div.day");
   days.forEach((day) => {
@@ -121,7 +108,7 @@ function dayNameGenerator() {
     thisDay = new Date(format.arr);
   }
 
-  // here
+  // FIXME: -BUG- i varoli all'interno di PageCurrentMonthYear non vengono resettati a quelli corretti
   days.forEach((day) => {
     let numberOfWeek = thisDay.getDay();
     let dayNumb = thisDay.getDate();
@@ -139,6 +126,7 @@ function dayNameGenerator() {
       else isCurrentMonth = false;
     }
   });
+  resetCurrent();
 }
 
 /**
@@ -192,5 +180,24 @@ if (today) {
  * modificare gli eventi all'interno del calendario in base ai nuovi giorni e al nuovo mese
  * scrivere script query per prendere gli eventi dal db
  */
-// Run after load
-$(document).ready(function () {});
+$(document).ready(function () {
+  console.log("ajax running...");
+  const days = Object.values(document.querySelectorAll("div.day"));
+  console.log(days);
+  days.forEach((day) => {
+    if (!day.classList.contains("transparency")) {
+      $.ajax({
+        type: "POST",
+        url: "php/loadData.php",
+        data: {
+          day: 1,
+          month: pageCurrentMonthYear[1],
+          year: pageCurrentMonthYear[0],
+        },
+        success: function (response) {
+          day.innerHTML += response;
+        },
+      });
+    }
+  });
+});

@@ -3,5 +3,4 @@
         <div class="date-name"></div>
         <div class="date-numb"></div>
     </div>
-    <div class="event"></div>
 </div>

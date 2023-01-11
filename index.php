@@ -74,10 +74,11 @@ function translateDays($day): string {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tommi's Calendar</title>
-    <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
-        integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 
-    <!-- <script src="script/jquery-3.6.3.slim.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    <!-- <script src="script/jquery-3.6.3.js"></script> -->
     <link rel="stylesheet" href="style/main.css">
 </head>
 <body onload="bodyOnLoad()">
@@ -87,8 +88,11 @@ function translateDays($day): string {
         <div class="calendar">
             <!-- TODO: rimuovere il nome dei giorni dai riquadri e fare una riga in alto solo per loro -->
             <!-- <div class="dayName"></div> -->
+
             <!-- FIXME: modificare gli eventi in base al mese/anno selezionato-->
+            <!-- TODO: aggiungere script per gli eventi -->
             <div class="month">
+                <!-- IMPORTANTE IN QUESTA SEZIONE SI EGEUONO SCRIPT JS  -->
                 <?php
                 for ($i = 1; $i < 42 + 1; $i++) {
                     include('php/day.php');
@@ -96,6 +100,7 @@ function translateDays($day): string {
                 ?>
             </div>
         </div>
+        <div class="here"></div>
 
         <?php include('php/footer.php'); ?>
     </div>
