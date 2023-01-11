@@ -22,4 +22,7 @@
     <div class="header-month header-year">
         <?php echo Date('M-Y'); ?>
     </div>
+    <div class="add-event">
+        <button class="b-event">+</button>
+    </div>
 </header>
