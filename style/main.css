@@ -16,7 +16,8 @@ header>*, footer>* { margin: 10px; }
 
 /* Calendar section style */
 .calendar {
-    border: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
     font-size: 15px;
 }
 
@@ -26,20 +27,21 @@ header>*, footer>* { margin: 10px; }
 }
 
 .day {
-    /* per l'ultima colonna rimuovere border-right */
     border-right: 0.5px solid var(--border-color);
-    /* per l'ultima riga rimuovere border-bottom */
     border-bottom: 0.5px solid var(--border-color);
     
     color: var(--date-color);
     text-align: center;
-    width: 100%;
     height: 110px;
+    overflow: hidden;
 }
+
 .day#Sun { color: red; }
+
 .transparency {
     color:rgba(0, 0, 0, 0.250);
 }
+
 .transparency#Sun {
     color: rgba(255, 0, 0, 0.250);
 }
