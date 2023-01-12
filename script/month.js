@@ -19,7 +19,7 @@ const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 let pageCurrentDate = [now.getFullYear(), now.getMonth() + 1];
 const movingDate = {
   arr: [...pageCurrentDate, 1],
-  next: function () {
+  nextDay: function () {
     if (
       (this.arr[2] == 31 && [1, 3, 5, 7, 8, 10, 12].includes(this.arr[1])) ||
       (this.arr[2] == 30 && [4, 6, 9, 11].includes(this.arr[1])) ||
@@ -33,7 +33,7 @@ const movingDate = {
       }
     } else this.arr[2] += 1;
   },
-  prev: function () {
+  prevDay: function () {
     if (this.arr[2] == 01 && [1, 3, 5, 7, 8, 10, 12].includes(this.arr[1])) {
       this.arr[2] = 31;
       this.arr[1] -= 1;
@@ -57,6 +57,18 @@ const movingDate = {
       }
     } else this.arr[2] -= 1;
   },
+  nextMonth: function () {
+    if (this.arr[1] == 12) {
+      this.arr[1] = 01;
+      this.arr[0] += 1;
+    } else this.arr[1] += 1;
+  },
+  prevMonth: function () {
+    if (this.arr[1] == 01) {
+      this.arr[1] = 12;
+      this.arr[0] -= 1;
+    } else this.arr[1] -= 1;
+  },
 };
 
 function resetCurrentDate() {
@@ -73,7 +85,7 @@ function changeHeader() {
 }
 changeHeader();
 
-function daysGenerator() {
+function formatDays() {
   const days = document.querySelectorAll("div.day");
   days.forEach((day) => {
     const dayName = day.id;
@@ -86,7 +98,7 @@ function daysGenerator() {
   let thisDay = new Date(format.arr);
   while (thisDay.getDay() != 1) {
     isCurrentMonth = false;
-    format.prev();
+    format.prevDay();
     thisDay = new Date(format.arr);
   }
 
@@ -98,9 +110,14 @@ function daysGenerator() {
       if (!isCurrentMonth) {
         day.firstElementChild.children[1].innerHTML =
           dayNumb + " " + thisDay.toDateString().substring(4, 7);
-        day.className += " transparency";
-      } else day.firstElementChild.children[1].innerHTML = dayNumb;
-      format.next();
+        if (!day.classList.contains("transparency"))
+          day.classList.add("transparency");
+      } else {
+        if (day.classList.contains("transparency"))
+          day.classList.remove("transparency");
+        day.firstElementChild.children[1].innerHTML = dayNumb;
+      }
+      format.nextDay();
       thisDay = new Date(format.arr);
       if (thisDay.getMonth() == pageCurrentDate[1] - 1) isCurrentMonth = true;
       else isCurrentMonth = false;
@@ -111,11 +128,11 @@ function daysGenerator() {
 }
 
 function bodyOnLoad() {
-  daysGenerator();
+  formatDays();
 }
 
-// FIXME: rimuovere ridondanze
-// TODO: cambio mese in griglia al click
+// TODO: modifica al calendario in base al mese
+// FIXME: non scorrono bene i mesi
 const nextMonth = document.querySelector("div.right-arrow");
 if (nextMonth) {
   nextMonth.addEventListener("click", () => {
@@ -126,39 +143,38 @@ if (nextMonth) {
       pageCurrentDate[1] += 1;
       pageCurrentDate[0];
     }
+    movingDate.nextDay();
     changeHeader();
+    formatDays();
+    popolate();
   });
 } else console.error("Not Found Button 'Next Month'!");
 
-const previousMonth = document.querySelector("div.left-arrow");
-if (previousMonth) {
-  previousMonth.addEventListener("click", () => {
-    if (pageCurrentDate[1] == 1) {
-      pageCurrentDate[1] = 12;
-      pageCurrentDate[0] -= 1;
-    } else {
-      pageCurrentDate[1] -= 1;
-      pageCurrentDate[0];
-    }
-    changeHeader();
-  });
-} else console.error("Not Found Button 'Previous Month'!");
+// DISABLE working on rigth arrow
 
-const today = document.querySelector("div.today-button");
-if (today) {
-  today.addEventListener("click", () => {
-    resetCurrentDate();
-    changeHeader();
-  });
-} else console.error("Not Found Button 'Today'");
+// const previousMonth = document.querySelector("div.left-arrow");
+// if (previousMonth) {
+//   previousMonth.addEventListener("click", () => {
+//     if (pageCurrentDate[1] == 1) {
+//       pageCurrentDate[1] = 12;
+//       pageCurrentDate[0] -= 1;
+//     } else {
+//       pageCurrentDate[1] -= 1;
+//       pageCurrentDate[0];
+//     }
+//     changeHeader();
+//   });
+// } else console.error("Not Found Button 'Previous Month'!");
 
-/**
- * TODO: usare AJAX con jquery
- * modificare il calendario cambiano i giorni in base al mese selezionato in 'pageCurrentDate[0]'
- * modificare gli eventi all'interno del calendario in base ai nuovi giorni e al nuovo mese
- * scrivere script query per prendere gli eventi dal db
- */
-$(document).ready(function () {
+// const today = document.querySelector("div.today-button");
+// if (today) {
+//   today.addEventListener("click", () => {
+//     resetCurrentDate();
+//     changeHeader();
+//   });
+// } else console.error("Not Found Button 'Today'");
+
+function popolate() {
   const days = Object.values(document.querySelectorAll("div.day"));
   days.forEach((day) => {
     if (!day.classList.contains("transparency")) {
@@ -177,9 +193,16 @@ $(document).ready(function () {
           day.innerHTML += response;
         },
       });
-      movingDate.next();
+      movingDate.nextDay();
     }
   });
   resetCurrentDate();
   resetMovingDate();
+}
+
+/**
+ * TODO: aggiungere modifiche degli eventi quando si cambia mese con i bottoni
+ */
+$(document).ready(function () {
+  popolate();
 });
