@@ -14,8 +14,13 @@ body { padding: 10px; }
 header, footer {
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 header>*, footer>* { margin: 10px; }
+
+header>.add-event {
+    float: right;
+}
 
 /* Calendar section style */
 .calendar {
@@ -44,21 +49,41 @@ header>*, footer>* { margin: 10px; }
     overflow: hidden;
 }
 
-.day#Sun { color: red; }
+.day#Sun>.date { color: red; }
 
 .transparency {
     color:rgba(0, 0, 0, 0.250);
 }
 
-.transparency#Sun {
+.transparency#Sun>.date {
     color: rgba(255, 0, 0, 0.250);
 }
 
-.event {
-    width: 80%;
+.date {
+    margin-bottom: 6px;
 }
-.event > .title {
+
+.event {
+    margin: 2px 0;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    align-items: center;
+    overflow: hidden;
+}
+.event>.point {
+    margin-right: 6px;
+    border-radius: 50%;
+    width: 9px;
+    height: 9px;
+    background-color: green;
+    display: inline-block;
+}
+.event>.title {
     font-size: 12px;
     width: 100%;
+    /* white-space: nowrap; */ /* DISABLE per vedere le date degli eventi*/
+    overflow: hidden;
+    /* overflow-x: hidden; */
 }
 
