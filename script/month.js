@@ -16,9 +16,7 @@ const months = [
   "December",
 ];
 const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-// parte dal mese e anno corrente si puo muovere in base alle freccie della pagina
 let pageCurrentDate = [now.getFullYear(), now.getMonth() + 1];
-// parte dal primo del mese corrente, si muove per lavorare
 const movingDate = {
   arr: [...pageCurrentDate, 1],
   next: function () {
@@ -75,7 +73,6 @@ function changeHeader() {
 }
 changeHeader();
 
-// TODO: eseguire questa funzione insieme agli script php per gli eventi
 function daysGenerator() {
   const days = document.querySelectorAll("div.day");
   days.forEach((day) => {

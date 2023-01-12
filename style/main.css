@@ -11,7 +11,10 @@
 }
 
 body { padding: 10px; }
-header, footer { display: flex; }
+header, footer {
+    display: flex;
+    flex-direction: row;
+}
 header>*, footer>* { margin: 10px; }
 
 /* Calendar section style */
@@ -23,15 +26,20 @@ header>*, footer>* { margin: 10px; }
 
 .month {
     display: grid;
-    grid-template-columns: repeat(7, auto);
+    /* TODO: aggiungere media query per gestire la riduzione dell dimensione dello schermo
+    la tabella ha dimensione semi-fissa adesso */
+    grid-template-columns: repeat(7, minmax(calc(100% * (1/7)),calc(100%* (1/7))));
 }
 
 .day {
     border-right: 0.5px solid var(--border-color);
     border-bottom: 0.5px solid var(--border-color);
-    
     color: var(--date-color);
+
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    align-items: center;
     height: 110px;
     overflow: hidden;
 }
@@ -47,9 +55,10 @@ header>*, footer>* { margin: 10px; }
 }
 
 .event {
-    margin: 10px 10px;
+    width: 80%;
 }
 .event > .title {
     font-size: 12px;
+    width: 100%;
 }
 
