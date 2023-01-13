@@ -9,8 +9,9 @@ if (sizeof($data)) {
     for ($i = 0; $i < count($data); $i++) {
         ?>
         <div class="event">
+            <div class="point"></div>
             <div class="title">
-                <?php echo $data[0]['title']; ?>
+                <?php echo $data[$i]['title'] ?>
             </div>
         </div>
     <?php

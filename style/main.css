@@ -82,7 +82,7 @@ header>.add-event {
 .event>.title {
     font-size: 12px;
     width: 100%;
-    /* white-space: nowrap; */ /* DISABLE per vedere le date degli eventi*/
+    white-space: nowrap;
     overflow: hidden;
     /* overflow-x: hidden; */
 }

@@ -71,9 +71,9 @@ const movingDate = {
   },
 };
 
-// function resetCurrentDate() {
-//   pageCurrentDate = [now.getFullYear(), now.getMonth() + 1];
-// }
+function resetCurrentDate() {
+  pageCurrentDate = [now.getFullYear(), now.getMonth() + 1];
+}
 function resetMovingDate() {
   movingDate.arr = [...pageCurrentDate, 1];
 }
@@ -149,29 +149,33 @@ if (nextMonth) {
   });
 } else console.error("Not Found Button 'Next Month'!");
 
-// DISABLE working on rigth arrow
+const previousMonth = document.querySelector("div.left-arrow");
+if (previousMonth) {
+  previousMonth.addEventListener("click", () => {
+    if (pageCurrentDate[1] == 1) {
+      pageCurrentDate[1] = 12;
+      pageCurrentDate[0] -= 1;
+    } else {
+      pageCurrentDate[1] -= 1;
+      pageCurrentDate[0];
+    }
+    movingDate.prevMonth();
+    changeHeader();
+    formatDays();
+    popolate();
+  });
+} else console.error("Not Found Button 'Previous Month'!");
 
-// const previousMonth = document.querySelector("div.left-arrow");
-// if (previousMonth) {
-//   previousMonth.addEventListener("click", () => {
-//     if (pageCurrentDate[1] == 1) {
-//       pageCurrentDate[1] = 12;
-//       pageCurrentDate[0] -= 1;
-//     } else {
-//       pageCurrentDate[1] -= 1;
-//       pageCurrentDate[0];
-//     }
-//     changeHeader();
-//   });
-// } else console.error("Not Found Button 'Previous Month'!");
-
-// const today = document.querySelector("div.today-button");
-// if (today) {
-//   today.addEventListener("click", () => {
-//     resetCurrentDate();
-//     changeHeader();
-//   });
-// } else console.error("Not Found Button 'Today'");
+const today = document.querySelector("div.today-button");
+if (today) {
+  today.addEventListener("click", () => {
+    resetCurrentDate();
+    changeHeader();
+    resetMovingDate();
+    formatDays();
+    popolate();
+  });
+} else console.error("Not Found Button 'Today'");
 
 function popolate() {
   const days = Object.values(document.querySelectorAll("div.day"));
@@ -205,9 +209,7 @@ function popolate() {
   resetMovingDate();
 }
 
-/**
- * TODO: aggiungere modifiche degli eventi quando si cambia mese con i bottoni
- */
+// TODO: aggiungere trasparenza ai giorni del mese corrente gia passati
 $(document).ready(function () {
   popolate();
 });
