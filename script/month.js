@@ -234,6 +234,10 @@ function popolate() {
         },
       });
       movingDate.nextDay();
+    } else {
+      while (day.childElementCount != 1) {
+        day.removeChild(day.lastElementChild);
+      }
     }
   });
   resetMovingDate();
