@@ -14,7 +14,7 @@ $daysName = array(
     0 => "Sun", 1 => "Mon", 2 => "Tue", 3 => "Wed", 4 => "Thu", 5 => "Fri", 6 => "Sat",
 );
 $months = array(
-    "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
+    '01' => "Jan", '02' => "Feb", '03' => "Mar", '04' => "Apr", '05' => "May", '06' => "Jun", '07' => "Jul", '08' => "Aug", '09' => "Sep", '10' => "Oct", '11' => "Nov", '12' => "Dec",
 );
 ?>
 <!DOCTYPE html>
@@ -41,8 +41,6 @@ $months = array(
             <!-- TODO: rimuovere il nome dei giorni dai riquadri e fare una riga in alto solo per loro -->
             <!-- <div class="dayNames"></div> -->
 
-            <!-- FIXME: modificare gli eventi in base al mese/anno selezionato-->
-            <!-- TODO: aggiungere script per gli eventi -->
             <?php
             for ($i = 1; $i < 42 + 1; $i++) {
                 include('php/day.php');
