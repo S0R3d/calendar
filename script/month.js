@@ -34,21 +34,21 @@ const movingDate = {
     } else this.arr[2] += 1;
   },
   prevDay: function () {
-    if (this.arr[2] == 01 && [1, 3, 5, 7, 8, 10, 12].includes(this.arr[1])) {
+    if (this.arr[2] == 01 && [2, 4, 6, 8, 9, 11, 1].includes(this.arr[1])) {
       this.arr[2] = 31;
       this.arr[1] -= 1;
       if (this.arr[1] < 1) {
         this.arr[1] = 12;
         this.arr[0] -= 1;
       }
-    } else if (this.arr[2] == 01 && [4, 6, 9, 11].includes(this.arr[1])) {
+    } else if (this.arr[2] == 01 && [5, 7, 10, 12].includes(this.arr[1])) {
       this.arr[2] = 30;
       this.arr[1] -= 1;
       if (this.arr[1] < 1) {
         this.arr[1] = 12;
         this.arr[0] -= 1;
       }
-    } else if (this.arr[2] == 28 && this.arr[1] == 2) {
+    } else if (this.arr[2] == 01 && this.arr[1] == 3) {
       this.arr[2] = 28;
       this.arr[1] -= 1;
       if (this.arr[1] < 1) {
@@ -71,9 +71,9 @@ const movingDate = {
   },
 };
 
-function resetCurrentDate() {
-  pageCurrentDate = [now.getFullYear(), now.getMonth() + 1];
-}
+// function resetCurrentDate() {
+//   pageCurrentDate = [now.getFullYear(), now.getMonth() + 1];
+// }
 function resetMovingDate() {
   movingDate.arr = [...pageCurrentDate, 1];
 }
@@ -93,13 +93,14 @@ function formatDays() {
     if (inner == "") day.firstElementChild.children[0].innerHTML = dayName;
   });
 
-  const format = movingDate;
+  // FIXME: con una copia in questo modo alla modifica di 'first' di modifica anche 'movingDate'
+  const first = movingDate;
   let isCurrentMonth = true;
-  let thisDay = new Date(format.arr);
+  let thisDay = new Date(first.arr);
   while (thisDay.getDay() != 1) {
     isCurrentMonth = false;
-    format.prevDay();
-    thisDay = new Date(format.arr);
+    first.prevDay();
+    thisDay = new Date(first.arr);
   }
 
   days.forEach((day) => {
@@ -117,13 +118,12 @@ function formatDays() {
           day.classList.remove("transparency");
         day.firstElementChild.children[1].innerHTML = dayNumb;
       }
-      format.nextDay();
-      thisDay = new Date(format.arr);
+      first.nextDay();
+      thisDay = new Date(first.arr);
       if (thisDay.getMonth() == pageCurrentDate[1] - 1) isCurrentMonth = true;
       else isCurrentMonth = false;
     }
   });
-  resetCurrentDate();
   resetMovingDate();
 }
 
@@ -132,7 +132,6 @@ function bodyOnLoad() {
 }
 
 // TODO: modifica al calendario in base al mese
-// FIXME: non scorrono bene i mesi
 const nextMonth = document.querySelector("div.right-arrow");
 if (nextMonth) {
   nextMonth.addEventListener("click", () => {
@@ -143,7 +142,7 @@ if (nextMonth) {
       pageCurrentDate[1] += 1;
       pageCurrentDate[0];
     }
-    movingDate.nextDay();
+    movingDate.nextMonth();
     changeHeader();
     formatDays();
     popolate();
@@ -190,13 +189,19 @@ function popolate() {
           year: y,
         },
         success: function (response) {
+          for (let i = 0; i < day.children.length; i++) {
+            const node = day.children[i];
+            if (node.classList.contains("event")) {
+              node.parentNode.removeChild(node);
+              --i;
+            }
+          }
           day.innerHTML += response;
         },
       });
       movingDate.nextDay();
     }
   });
-  resetCurrentDate();
   resetMovingDate();
 }
 
