@@ -15,6 +15,20 @@ const months = [
   "November",
   "December",
 ];
+const sMonths = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 let pageCurrentDate = [now.getFullYear(), now.getMonth() + 1];
 const movingDate = {
@@ -69,6 +83,12 @@ const movingDate = {
       this.arr[0] -= 1;
     } else this.arr[1] -= 1;
   },
+  getDay: function () {
+    return this.arr[2];
+  },
+  getMonth: function () {
+    return this.arr[1];
+  },
 };
 
 function resetCurrentDate() {
@@ -104,6 +124,7 @@ function formatDays() {
   }
 
   days.forEach((day) => {
+    fillMonth(day, first.getMonth());
     let numberOfWeek = thisDay.getDay();
     let dayNumb = thisDay.getDate();
     const dayName = day.id;
@@ -124,14 +145,22 @@ function formatDays() {
       else isCurrentMonth = false;
     }
   });
+
   resetMovingDate();
+}
+
+function fillMonth(day, month) {
+  const arr = day.className.split(" ");
+  if (sMonths.some((el) => arr.includes(el))) {
+    let index = arr.findIndex((el) => sMonths.includes(el));
+    day.classList.replace(day.classList[index], sMonths[month - 1]);
+  } else day.classList.add(sMonths[month - 1]);
 }
 
 function bodyOnLoad() {
   formatDays();
 }
 
-// TODO: modifica al calendario in base al mese
 const nextMonth = document.querySelector("div.right-arrow");
 if (nextMonth) {
   nextMonth.addEventListener("click", () => {
@@ -180,6 +209,7 @@ if (today) {
 function popolate() {
   const days = Object.values(document.querySelectorAll("div.day"));
   days.forEach((day) => {
+    // FIXME: controllo sulla trasparenza errato, aggiungere all'elemento il mesa da qualche parte e controllare se il mese inserito è uguale al mese corrente per inserire solo gli eventi del mese corrente
     if (!day.classList.contains("transparency")) {
       let d = movingDate.arr[2];
       let m = movingDate.arr[1];
