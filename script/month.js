@@ -100,7 +100,7 @@ function resetMovingDate() {
 
 function changeHeader() {
   const monthYear = document.querySelector("div.header-month.header-year");
-  monthYear.innerHTML =
+  monthYear.firstElementChild.innerHTML =
     `${months[pageCurrentDate[1] - 1]}` + " " + `${pageCurrentDate[0]}`;
 }
 changeHeader();
@@ -163,7 +163,7 @@ function bodyOnLoad() {
   formatDays();
 }
 
-const nextMonth = document.querySelector("div.right-arrow");
+const nextMonth = document.querySelector("div.right-ar");
 if (nextMonth) {
   nextMonth.addEventListener("click", () => {
     if (pageCurrentDate[1] == 12) {
@@ -180,7 +180,7 @@ if (nextMonth) {
   });
 } else console.error("Not Found Button 'Next Month'!");
 
-const previousMonth = document.querySelector("div.left-arrow");
+const previousMonth = document.querySelector("div.left-ar");
 if (previousMonth) {
   previousMonth.addEventListener("click", () => {
     if (pageCurrentDate[1] == 1) {
@@ -197,7 +197,7 @@ if (previousMonth) {
   });
 } else console.error("Not Found Button 'Previous Month'!");
 
-const today = document.querySelector("div.today-button");
+const today = document.querySelector("div.today-btn");
 if (today) {
   today.addEventListener("click", () => {
     resetCurrentDate();

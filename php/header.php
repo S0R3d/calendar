@@ -1,26 +1,30 @@
 <header>
-    <span>header</span>
     <div class="logo">
-        <span>logo</span>
+        <?php include("./img/calendar.svg") ?>
+        <span>Calendar</span>
     </div>
-    <div class="today-button">
-        <button>
-            <span>today</span>
-        </button>
-    </div>
-    <div class="left-arrow">
-        <button>
-            <span>
-                < </span>
-        </button>
-    </div>
-    <div class="right-arrow">
-        <button>
-            <span> > </span>
-        </button>
+    <div class="btn">
+        <div class="today-btn">
+            <button>
+                <span>today</span>
+            </button>
+        </div>
+        <div class="left-ar">
+            <button>
+                <span>
+                    < </span>
+            </button>
+        </div>
+        <div class="right-ar">
+            <button>
+                <span> > </span>
+            </button>
+        </div>
     </div>
     <div class="header-month header-year">
-        <?php echo Date('M-Y'); ?>
+        <span>
+            <?php echo Date('M-Y'); ?>
+        </span>
     </div>
     <div class="add-event">
         <button class="b-event">+</button>
