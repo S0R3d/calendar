@@ -98,13 +98,6 @@ function resetMovingDate() {
   movingDate.arr = [...pageCurrentDate, 1];
 }
 
-function changeHeader() {
-  const monthYear = document.querySelector("div.header-month.header-year");
-  monthYear.firstElementChild.innerHTML =
-    `${months[pageCurrentDate[1] - 1]}` + " " + `${pageCurrentDate[0]}`;
-}
-changeHeader();
-
 function formatDays() {
   const days = document.querySelectorAll("div.day");
   days.forEach((day) => {
@@ -145,9 +138,7 @@ function formatDays() {
       else isCurrentMonth = false;
     }
   });
-
   pastDay(days);
-
   resetMovingDate();
 }
 
@@ -162,51 +153,6 @@ function fillMonth(day, month) {
 function bodyOnLoad() {
   formatDays();
 }
-
-const nextMonth = document.querySelector("div.right-ar");
-if (nextMonth) {
-  nextMonth.addEventListener("click", () => {
-    if (pageCurrentDate[1] == 12) {
-      pageCurrentDate[1] = 1;
-      pageCurrentDate[0] += 1;
-    } else {
-      pageCurrentDate[1] += 1;
-      pageCurrentDate[0];
-    }
-    movingDate.nextMonth();
-    changeHeader();
-    formatDays();
-    popolate();
-  });
-} else console.error("Not Found Button 'Next Month'!");
-
-const previousMonth = document.querySelector("div.left-ar");
-if (previousMonth) {
-  previousMonth.addEventListener("click", () => {
-    if (pageCurrentDate[1] == 1) {
-      pageCurrentDate[1] = 12;
-      pageCurrentDate[0] -= 1;
-    } else {
-      pageCurrentDate[1] -= 1;
-      pageCurrentDate[0];
-    }
-    movingDate.prevMonth();
-    changeHeader();
-    formatDays();
-    popolate();
-  });
-} else console.error("Not Found Button 'Previous Month'!");
-
-const today = document.querySelector("div.today-btn");
-if (today) {
-  today.addEventListener("click", () => {
-    resetCurrentDate();
-    changeHeader();
-    resetMovingDate();
-    formatDays();
-    popolate();
-  });
-} else console.error("Not Found Button 'Today'");
 
 function popolate() {
   const days = Object.values(document.querySelectorAll("div.day"));

@@ -52,5 +52,6 @@ $months = array(
     </div>
 
     <script src="script/month.js"></script>
+    <script src="script/header.js"></script>
 </body>
 </html>
