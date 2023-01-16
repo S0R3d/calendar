@@ -5,20 +5,15 @@
     </div>
     <div class="btn">
         <div class="today-btn">
-            <button>
-                <span>today</span>
-            </button>
+            <button class="btn-today">today</button>
         </div>
         <div class="left-ar">
-            <button>
-                <span>
-                    < </span>
-            </button>
+            <button class="btn-arrow-left">
+                < </button>
         </div>
         <div class="right-ar">
-            <button>
-                <span> > </span>
-            </button>
+            <button class="btn-arrow-right">
+                > </button>
         </div>
     </div>
     <div class="header-month header-year">
@@ -26,7 +21,9 @@
             <?php echo Date('M-Y'); ?>
         </span>
     </div>
-    <div class="add-event">
-        <button class="b-event">+</button>
+    <div class="add-event dropdown">
+        <button class="btn-add-event">+</button>
+        <div class="dropdown-content">
+        </div>
     </div>
 </header>
