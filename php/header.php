@@ -24,20 +24,20 @@
     <div class="add-event dropdown">
         <button class="btn-add-event">+</button>
         <div class="dropdown-content">
-            <form action="/php/insertData.php" method="post" class="fDB">
+            <form action="/php/insertData.php" method="post" class="fDB" target="_blank">
 
                 <div class="title">
-                    <label class="title" for="fname">*Titolo dell' evento:</label><br>
+                    <label class="title" for="fname">Titolo dell' evento:</label><br>
                     <input class="title" type="text" id="fname" name="title" value="" required><br>
                 </div>
 
                 <div class="sDate">
-                    <label for="fsdate">*Data di inizio: </label><br>
+                    <label for="fsdate">Data di inizio: </label><br>
                     <input type="date" id="fsdate" name="sDate" value="" required><br>
                 </div>
 
                 <div class="fDate">
-                    <label for=" ffdate">*Data di fine: </label><br>
+                    <label for=" ffdate">Data di fine: </label><br>
                     <input type="date" id="ffdate" name="fDate" value="" required><br>
                 </div>
 
@@ -55,8 +55,6 @@
                     <label for="fftime">Orario di fine: </label><br>
                     <input type="time" id="fftime" name="fTime" value=""><br>
                 </div>
-
-                <label for="">(* campi obbligatori)</label> <br>
 
                 <input type="submit" value="Add Event">
             </form>

@@ -85,6 +85,7 @@ header>.add-event {
     grid-column: 6/7;
 }
 
+/* TODO: aggiungere effetto zoom, cambio colore con Hover */
 header>.add-event>button {
     margin: 0 5px;
 
@@ -137,6 +138,30 @@ header>.add-event>button {
     gap: 8px;
 
     text-align: center;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"] {
+    border: 1px solid #333;
+    box-sizing: border-box;
+}
+
+.required {
+    box-shadow: 0 0 5px 1px red;
+}
+
+/* input:invalid {
+    box-shadow: 0 0 5px 1px #900;
+} */
+
+input:invalid {
+    border-color: #900;
+    background-color: #fdd;
+}
+
+input:focus:invalid {
+    outline: none;
 }
 
 /* Calendar section style */
