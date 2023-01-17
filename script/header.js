@@ -13,7 +13,18 @@ const todayBtn = document.querySelector("button.btn-today");
 const nextBtn = document.querySelector("button.btn-arrow-right");
 const prevBtn = document.querySelector("button.btn-arrow-left");
 const addEventBtn = document.querySelector("button.btn-add-event");
-const cbFullDay = document.querySelector("div.fullDay>input");
+
+const form = document.querySelector("form.fDB");
+
+const fullDayBtn = document.querySelector("div.fullDay>input");
+
+const title = document.querySelector("div.title>input");
+const sDate = document.querySelector("div.sDate>input");
+const fDate = document.querySelector("div.fDate>input");
+const sTime = document.querySelector("div.sTime>input");
+const fTime = document.querySelector("div.fTime>input");
+
+// const submit = document.querySelector("input[type='submit']");
 
 if (nextBtn) {
   nextBtn.addEventListener("click", () => {
@@ -60,8 +71,42 @@ if (todayBtn) {
 if (addEventBtn) {
   addEventBtn.addEventListener("click", () => {
     document.querySelector("div.dropdown-content").classList.toggle("show");
+    clearInput();
   });
 } else console.error("Not Found Button 'Add Event'");
+
+title.setCustomValidity("Inserire un titolo per l'evento");
+sDate.setCustomValidity("Inserire una data di inizio valida");
+fDate.setCustomValidity("Inserire una data di fine valida");
+sTime.setCustomValidity("Inserire un tempo di inizio valido");
+fTime.setCustomValidity("Inserire un tempo di fine valido");
+
+function clearInput() {
+  title.value = "";
+  sDate.value = "";
+  fDate.value = "";
+  sTime.value = "";
+  fTime.value = "";
+}
+
+if (fullDayBtn) {
+  fullDayBtn.addEventListener("change", () => {
+    document.querySelector("div.sTime").classList.toggle("hide");
+    sTime.value = "";
+    sTime.setCustomValidity("Inserire un tempo di inizio valido");
+    document.querySelector("div.fTime").classList.toggle("hide");
+    fTime.value = "";
+    fTime.setCustomValidity("Inserire un tempo di fine valido");
+
+    if (fullDayBtn.checked) {
+      sTime.required = false;
+      fTime.required = false;
+    } else {
+      sTime.required = true;
+      fTime.required = true;
+    }
+  });
+} else console.error("Not Found Checkbox 'Full Day'");
 
 window.onclick = function (event) {
   if (
@@ -75,15 +120,50 @@ window.onclick = function (event) {
     let openDD = document.querySelector("div.dropdown-content");
     if (openDD.classList.contains("show")) {
       openDD.classList.remove("show");
+      clearInput();
     }
   }
 };
 
-if (cbFullDay) {
-  cbFullDay.addEventListener("change", () => {
-    document.querySelector("div.sTime").classList.toggle("hide");
-    document.querySelector("div.fTime").classList.toggle("hide");
-  });
-} else console.error("Not Found Checkbox 'Full Day'");
+title.addEventListener("input", () => {
+  if (title.validity.typeMismatch) {
+    title.setCustomValidity("Inserire un titolo per l'evento");
+  } else title.setCustomValidity("");
+});
 
-// Validations form inputs via JS
+sDate.addEventListener("input", () => {
+  if (sDate.validity.typeMismatch) {
+    sDate.setCustomValidity("Inserire una data valida");
+  } else sDate.setCustomValidity("");
+});
+
+fDate.addEventListener("input", () => {
+  if (fDate.validity.typeMismatch) {
+    fDate.setCustomValidity("Inserire una data valida");
+  } else fDate.setCustomValidity("");
+});
+
+sTime.addEventListener("input", () => {
+  if (sTime.validity.typeMismatch) {
+    sTime.setCustomValidity("Inserire un tempo di inizio valido");
+  } else sTime.setCustomValidity("");
+
+  fTime.required = true;
+});
+
+fTime.addEventListener("input", () => {
+  if (fTime.validity.typeMismatch) {
+    fTime.setCustomValidity("Inserire un tempo di fine valido");
+  } else fTime.setCustomValidity("");
+
+  sTime.required = true;
+});
+
+const err = document.querySelector("#mail + span.error");
+
+form.addEventListener("submit", (e) => {
+  console.log(e);
+  // TODO: controllo correttezza e coerenza di tutti gli 'input's
+
+  // e.preventDefault();
+});
