@@ -24,7 +24,7 @@
     <div class="add-event dropdown">
         <button class="btn-add-event">+</button>
         <div class="dropdown-content">
-            <form action="/php/insertData.php" method="post" class="fDB" target="_blank">
+            <form action="/" method="post" class="fDB" target="_blank">
 
                 <div class="title">
                     <label class="title" for="fname">Titolo dell' evento:</label><br>
