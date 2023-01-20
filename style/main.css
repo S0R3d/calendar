@@ -151,10 +151,6 @@ input[type="time"] {
     box-shadow: 0 0 5px 1px red;
 }
 
-/* input:invalid {
-    box-shadow: 0 0 5px 1px #900;
-} */
-
 input:invalid {
     border-color: #900;
     background-color: #fdd;
@@ -192,7 +188,7 @@ input:focus:invalid {
 }
 
 .day#Sun>.date {
-    color: red;
+    color: rgba(255, 0, 0, 0);
 }
 
 .transparency {
@@ -223,6 +219,10 @@ input:focus:invalid {
     height: 9px;
     background-color: green;
     display: inline-block;
+}
+
+.transparency .event>.point {
+    background-color: rgba(0, 128, 0, 0.250);
 }
 
 .event>.title {
