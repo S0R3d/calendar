@@ -159,7 +159,7 @@ function bodyOnLoad() {
   formatDays();
 }
 
-function popolate() {
+function fillDays() {
   const days = Object.values(document.querySelectorAll("div.day"));
   days.forEach((day) => {
     // if (day.classList.contains("transparency")) {
@@ -178,7 +178,7 @@ function popolate() {
           month: m,
           day: d,
         },
-        success: function (response) {
+        success: function (r) {
           for (let i = 0; i < day.children.length; i++) {
             const node = day.children[i];
             if (node.classList.contains("event")) {
@@ -186,7 +186,7 @@ function popolate() {
               --i;
             }
           }
-          day.innerHTML += response;
+          day.innerHTML += r;
         },
       });
       movingDate.nextDay();
@@ -216,5 +216,5 @@ function pastDay(days) {
 }
 
 $(document).ready(function () {
-  popolate();
+  fillDays();
 });
