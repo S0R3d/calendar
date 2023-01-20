@@ -1,6 +1,4 @@
-// document.addEventListener("click", (e) => {
-//   console.log(e);
-// });
+// TODO: inserire tutto all'interno di funzioni per non rendere visibile nell'ispector e per non dare accesso diretto alle costanti
 
 function changeHeader() {
   const monthYear = document.querySelector("div.header-month.header-year");
@@ -25,6 +23,14 @@ const sTime = document.querySelector("div.sTime>input");
 const fTime = document.querySelector("div.fTime>input");
 
 // const submit = document.querySelector("input[type='submit']");
+
+function clearInput() {
+  title.value = "";
+  sDate.value = "";
+  fDate.value = "";
+  sTime.value = "";
+  fTime.value = "";
+}
 
 if (nextBtn) {
   nextBtn.addEventListener("click", () => {
@@ -81,29 +87,23 @@ fDate.setCustomValidity("Inserire una data di fine valida");
 sTime.setCustomValidity("Inserire un tempo di inizio valido");
 fTime.setCustomValidity("Inserire un tempo di fine valido");
 
-function clearInput() {
-  title.value = "";
-  sDate.value = "";
-  fDate.value = "";
-  sTime.value = "";
-  fTime.value = "";
-}
-
 if (fullDayBtn) {
   fullDayBtn.addEventListener("change", () => {
     document.querySelector("div.sTime").classList.toggle("hide");
-    sTime.value = "";
-    sTime.setCustomValidity("Inserire un tempo di inizio valido");
     document.querySelector("div.fTime").classList.toggle("hide");
-    fTime.value = "";
-    fTime.setCustomValidity("Inserire un tempo di fine valido");
 
     if (fullDayBtn.checked) {
       sTime.required = false;
       fTime.required = false;
+      sTime.value = "";
+      fTime.value = "";
+      sTime.setCustomValidity("");
+      fTime.setCustomValidity("");
     } else {
       sTime.required = true;
       fTime.required = true;
+      sTime.setCustomValidity("Inserire un tempo di inizio valido");
+      fTime.setCustomValidity("Inserire un tempo di fine valido");
     }
   });
 } else console.error("Not Found Checkbox 'Full Day'");
@@ -147,7 +147,6 @@ sTime.addEventListener("input", () => {
   if (sTime.validity.typeMismatch) {
     sTime.setCustomValidity("Inserire un tempo di inizio valido");
   } else sTime.setCustomValidity("");
-
   fTime.required = true;
 });
 
@@ -155,15 +154,50 @@ fTime.addEventListener("input", () => {
   if (fTime.validity.typeMismatch) {
     fTime.setCustomValidity("Inserire un tempo di fine valido");
   } else fTime.setCustomValidity("");
-
   sTime.required = true;
 });
 
-const err = document.querySelector("#mail + span.error");
+function a(e) {
+  let t = e.target[0].value;
+
+  const MIN_DATE_VALUE = "1990-01-01";
+  const MAX_DATE_VALUE = "2300-12-12";
+  let sD = e.target[1].value,
+    fD = e.target[2].value;
+  if (sD < MIN_DATE_VALUE) return;
+
+  if (fD < MIN_DATE_VALUE) return;
+  if (fD < sD) return;
+
+  const MIN_TIME_VALUE = "00:00:00";
+  const MAX_TIME_VALUE = "23:59:59";
+  let sT = e.target[4].value,
+    fT = e.target[5].value;
+  if (e.target[3].checked) {
+    sT = MIN_TIME_VALUE;
+    fT = MAX_TIME_VALUE;
+
+    if (sD == fD && sT > fT) return;
+  }
+
+  // invio dati a database
+  $.ajax({
+    type: "POST",
+    url: "../php/insertData.php",
+    data: {
+      title: t,
+      sDate: sD,
+      fDate: fD,
+      sTime: sT,
+      fTime: fT,
+    },
+    success: function (r) {
+      console.log(r);
+    },
+  });
+}
 
 form.addEventListener("submit", (e) => {
-  console.log(e);
-  // TODO: controllo correttezza e coerenza di tutti gli 'input's
-
-  // e.preventDefault();
+  a(e);
+  e.preventDefault();
 });
