@@ -44,7 +44,7 @@ if (nextBtn) {
     movingDate.nextMonth();
     changeHeader();
     formatDays();
-    popolate();
+    fillDays();
   });
 } else console.error("Not Found Button 'Next Month'!");
 
@@ -60,7 +60,7 @@ if (prevBtn) {
     movingDate.prevMonth();
     changeHeader();
     formatDays();
-    popolate();
+    fillDays();
   });
 } else console.error("Not Found Button 'Previous Month'!");
 
@@ -70,7 +70,7 @@ if (todayBtn) {
     changeHeader();
     resetMovingDate();
     formatDays();
-    popolate();
+    fillDays();
   });
 } else console.error("Not Found Button 'Today'");
 
@@ -192,7 +192,7 @@ function a(e) {
       fTime: fT,
     },
     success: function (r) {
-      console.log(r);
+      fillDays();
     },
   });
 }
