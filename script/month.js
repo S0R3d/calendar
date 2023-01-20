@@ -30,6 +30,11 @@ const monthShort = [
   "Dec",
 ];
 const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+/**
+ * [0]: return current page year
+ *
+ * [1]: return current page month
+ */
 let pageCurrentDate = [now.getFullYear(), now.getMonth() + 1];
 const movingDate = {
   arr: [...pageCurrentDate, 1],
@@ -157,17 +162,21 @@ function bodyOnLoad() {
 function popolate() {
   const days = Object.values(document.querySelectorAll("div.day"));
   days.forEach((day) => {
-    if (!day.classList.contains("transparency")) {
+    // if (day.classList.contains("transparency")) {
+    //   while (day.childElementCount != 1)
+    //     day.removeChild(day.lastElementChild);
+    // }
+    if (day.classList.contains(monthShort[now.getMonth()])) {
       let d = movingDate.arr[2];
       let m = movingDate.arr[1];
       let y = movingDate.arr[0];
       $.ajax({
         type: "POST",
-        url: "php/loadData.php",
+        url: "../php/loadData.php",
         data: {
-          day: d,
-          month: m,
           year: y,
+          month: m,
+          day: d,
         },
         success: function (response) {
           for (let i = 0; i < day.children.length; i++) {

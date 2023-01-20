@@ -1,7 +1,7 @@
 <?php
 require_once("../php/conn.php");
 $start = $_POST['year']."-".$_POST['month']."-".$_POST['day'];
-$query = "SELECT * FROM events WHERE sDate = :start ";
+$query = "SELECT * FROM `events` WHERE `sDate` = :start ";
 $state = $db->prepare($query);
 $state->execute(['start' => $start]);
 $data = $state->fetchAll();
