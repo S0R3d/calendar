@@ -1,5 +1,3 @@
-// TODO: inserire tutto all'interno di funzioni per non rendere visibile nell'ispector e per non dare accesso diretto alle costanti
-
 function changeHeader() {
   const monthYear = document.querySelector("div.header-month.header-year");
   monthYear.firstElementChild.innerHTML =
