@@ -24,10 +24,8 @@ $months = array(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tommi's Calendar</title>
-
     <script src="https://code.jquery.com/jquery-3.6.3.js"
         integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-
     <!-- <script src="script/jquery-3.6.3.js"></script> -->
     <link rel="stylesheet" href="style/main.css">
 </head>
@@ -37,17 +35,12 @@ $months = array(
 
         <div class="calendar month">
             <!-- IMPORTANTE IN QUESTA SEZIONE SI EGEUONO SCRIPT JS  -->
-
-            <!-- TODO: rimuovere il nome dei giorni dai riquadri e fare una riga in alto solo per loro -->
-            <!-- <div class="dayNames"></div> -->
-
             <?php
             for ($i = 1; $i < 42 + 1; $i++) {
                 include('php/day.php');
             }
             ?>
         </div>
-
         <?php include('php/footer.php'); ?>
     </div>
 
