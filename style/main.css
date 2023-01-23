@@ -1,9 +1,12 @@
 /* FIXME: aggionare le misure (px) con paramentri scalabili
         in base alla dimensione schermo (page responsive) */
 :root {
-    --border-color: rgba(0, 0, 0, 0.250);
+    --brd-color: rgba(0, 0, 0, 0.250);
     --date-color: rgba(0, 0, 0, 0.717);
     --logo-dim: 30px;
+    --bg-event: rgb(0, 128, 0);
+    --bg-t-event: rgba(0, 128, 0, 0.250);
+    --text-t-event: rgba(0, 0, 0, 0.250);
 }
 
 * {
@@ -17,7 +20,7 @@ body {
 }
 
 button {
-    background-color: white;
+    background-color: #fff;
     border-style: solid;
 }
 
@@ -90,12 +93,12 @@ header>.add-event>button {
     margin: 0 5px;
 
     border-radius: 50%;
-    border: 2px solid black;
+    border: 2px solid #000;
 
     width: var(--logo-dim);
     height: var(--logo-dim);
 
-    color: blue;
+    color: rgb(0, 0, 255);
     text-align: center;
 }
 
@@ -148,7 +151,7 @@ input[type="time"] {
 }
 
 .required {
-    box-shadow: 0 0 5px 1px red;
+    box-shadow: 0 0 5px 1px rgb(255, 0, 0);
 }
 
 input:invalid {
@@ -162,8 +165,8 @@ input:focus:invalid {
 
 /* Calendar section style */
 .calendar {
-    border-top: 1px solid var(--border-color);
-    border-left: 1px solid var(--border-color);
+    border-top: 1px solid var(--brd-color);
+    border-left: 1px solid var(--brd-color);
     font-size: 15px;
 }
 
@@ -175,9 +178,9 @@ input:focus:invalid {
 }
 
 .day {
-    border-right: 0.5px solid var(--border-color);
-    border-bottom: 0.5px solid var(--border-color);
-    color: var(--date-color);
+    border-right: 0.5px solid var(--brd-color);
+    border-bottom: 0.5px solid var(--brd-color);
+    color: var(--dt-color);
 
     display: flex;
     flex-direction: column;
@@ -223,7 +226,7 @@ input:focus:invalid {
 }
 
 .transparency .event>.icon {
-    background-color: rgba(0, 128, 0, 0.250);
+    background-color: var(--bg-t-event);
 }
 
 .event>.title {
@@ -235,16 +238,16 @@ input:focus:invalid {
 
 /* giorno completo senza ora di inizio e/o di fine */
 .event.Fgg {
-    border: 2px solid rgb(0, 128, 0);
+    border: 2px solid var(--bg-event);
     border-radius: 8px;
-    background-color: rgb(0, 128, 0);
+    background-color: var(--bg-event);
     color: #fff;
     padding: 1px;
 }
 
 .transparency .event.Fgg {
     border: none;
-    background-color: rgba(0, 128, 0, 0.250);
+    background-color: var(--bg-t-event);
     color: rgba(0, 0, 0, 0.250);
     padding: 3px;
 }
@@ -254,14 +257,33 @@ input:focus:invalid {
 }
 
 /* giorni completi senza ora di inizio e/o di fine */
-.event.Fggs {}
+.event.Fggs {
+    border: 2px solid var(--bg-event);
+    border-radius: 8px;
+    background-color: var(--bg-event);
+    color: #fff;
+    padding: 1px;
+}
+
+.transparency .event.Fggs {
+    border: none;
+    background-color: var(--bg-t-event);
+    color: rgba(0, 0, 0, 0.250);
+    padding: 3px;
+}
 
 .event.Fggs .icon {
     display: none;
 }
 
 /* giorno non completo con ora di inizio e di fine */
-.event.NFgg {}
+.event.NFgg {
+    margin-left: 7px;
+    width: 95%;
+}
 
 /* giorni non completi con ora di inizio e di fine */
-.event.NFggs {}
+.event.NFggs {
+    margin-left: 7px;
+    width: 95%;
+}
