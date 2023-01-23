@@ -188,7 +188,7 @@ input:focus:invalid {
 }
 
 .day#Sun>.date {
-    color: rgba(255, 0, 0, 0);
+    color: rgb(255, 0, 0);
 }
 
 .transparency {
