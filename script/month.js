@@ -160,8 +160,8 @@ function bodyOnLoad() {
 }
 
 function fillDays() {
-  const days = Object.values(document.querySelectorAll("div.day"));
-  days.forEach((day) => {
+  const days = document.querySelectorAll("div.day");
+  days.forEach((day, key, arr) => {
     // if (day.classList.contains("transparency")) {
     //   while (day.childElementCount != 1)
     //     day.removeChild(day.lastElementChild);
@@ -179,14 +179,22 @@ function fillDays() {
           day: d,
         },
         success: function (r) {
-          for (let i = 0; i < day.children.length; i++) {
-            const node = day.children[i];
-            if (node.classList.contains("event")) {
-              node.parentNode.removeChild(node);
-              --i;
-            }
+          // for (let i = 0; i < day.children.length; i++) {
+          //   const node = day.children[i];
+          //   if (node.classList.contains("event")) {
+          //     node.parentNode.removeChild(node);
+          //     --i;
+          //   }
+          // }
+          let a = r.split(" ").filter((e) => {
+            return e;
+          });
+          // TODO: funziona con un evento da due giorni, ma da piu?
+          if (a.includes('end-evt">\n')) {
+            let b = a.splice(a.indexOf('end-evt">\n') - 3);
+            days[++key].innerHTML += b.join(" ");
           }
-          day.innerHTML += r;
+          day.innerHTML += a.join(" ");
         },
       });
       movingDate.nextDay();
