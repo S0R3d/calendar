@@ -22,7 +22,9 @@ if (sizeof($data)) {
                 </div>
             </div>
         <?php
-        } else if ($sD != $fD and ($sT == $fT and $fT == "00:00")) { // Fggs ?>
+        } else if ($sD != $fD and ($sT == $fT and $fT == "00:00")) { // Fggs
+            $diff = (substr($fD, 8) - substr($sD, 8));
+        ?>
             <div class="event Fggs">
                 <div class="icon"></div>
                 <div class="title">
@@ -30,6 +32,13 @@ if (sizeof($data)) {
                 </div>
             </div>
         <?php
+            for ($i=0; $i < $diff; $i++) { ?>
+               <div class="event Fggs end-evt">
+                <div class="icon"></div>
+                <div class="title"></div>
+               </div> 
+            <?php
+            }
         } else if ($sD == $fD and $sT != $fT) { // NFgg ?>
             <div class="event NFgg">
                 <div class="icon"></div>
@@ -39,7 +48,8 @@ if (sizeof($data)) {
                 </div>
             </div>
         <?php
-        } else if ($sD != $fD and $sT != $fT) { // NFggs ?>
+        } else if ($sD != $fD and $sT != $fT) { // NFggs 
+        // FIXME: i giorni multipli NON funzionano, carica solo nel primo giorni(sDate) ?>
             <div class="event NFggs">
                 <div class="icon"></div>
                 <div class="title">
@@ -48,13 +58,6 @@ if (sizeof($data)) {
                 </div>
             </div>
         <?php
-        } else { ?>
-            <div class="event"></div>
-        <?php
         }
     }
-} else { ?>
-    <div class="event"></div>
-<?php
-}
-?>
+} ?>

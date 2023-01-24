@@ -260,9 +260,18 @@ input:focus:invalid {
 .event.Fggs {
     border: 2px solid var(--bg-event);
     border-radius: 8px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+
     background-color: var(--bg-event);
     color: #fff;
     padding: 1px;
+
+}
+
+.event.Fggs.end-evt {
+    height: 20px;
+    border-radius: 0 8px 8px 0;
 }
 
 .transparency .event.Fggs {
@@ -272,6 +281,7 @@ input:focus:invalid {
     padding: 3px;
 }
 
+
 .event.Fggs .icon {
     display: none;
 }
@@ -279,11 +289,11 @@ input:focus:invalid {
 /* giorno non completo con ora di inizio e di fine */
 .event.NFgg {
     margin-left: 7px;
-    width: 95%;
+    padding: 3px 0;
 }
 
 /* giorni non completi con ora di inizio e di fine */
 .event.NFggs {
     margin-left: 7px;
-    width: 95%;
+    padding: 3px 0;
 }
