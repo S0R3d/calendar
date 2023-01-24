@@ -179,6 +179,7 @@ function fillDays() {
           day: d,
         },
         success: function (r) {
+          console.log(r);
           // for (let i = 0; i < day.children.length; i++) {
           //   const node = day.children[i];
           //   if (node.classList.contains("event")) {
@@ -189,12 +190,27 @@ function fillDays() {
           let a = r.split(" ").filter((e) => {
             return e;
           });
-          // TODO: funziona con un evento da due giorni, ma da piu?
-          if (a.includes('end-evt">\n')) {
-            let b = a.splice(a.indexOf('end-evt">\n') - 3);
-            days[++key].innerHTML += b.join(" ");
+
+          console.log("findIndex");
+          console.log(
+            a.findIndex((e) => {
+              return e.includes("event");
+            })
+          );
+
+          console.log(
+            r.split(" ").filter((e) => {
+              return e;
+            })
+          );
+          // FIXME: con eventi multipli non funziona
+          let b = a;
+          while (b.includes('end-evt">\n')) {
+            days[++key].innerHTML += b
+              .splice(b.lastIndexOf('end-evt">\n') - 3)
+              .join(" ");
           }
-          day.innerHTML += a.join(" ");
+          day.innerHTML += b.join(" ");
         },
       });
       movingDate.nextDay();
