@@ -216,11 +216,10 @@ function fillDays() {
               $thisDay = arr[y];
               next = arr[++y];
             }
-            // TODO: aggiungere il br-radius all'ultimo elemento di un Fggs o NFggs
-            // let childArr = Array.from($thisDay.children).find((child) => {
-            //   return child.classList.contains("end-evt");
-            // });
-            // if (childArr) childArr.classList.add("last-evt");
+            let childArr = Array.from($thisDay.children).find((child) => {
+              return child.classList.contains("end-evt");
+            });
+            if (childArr) childArr.classList.add("last-evt");
             let dayArr = Array.from(day.children).find((e) => {
               return e.className == "event";
             });
