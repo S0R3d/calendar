@@ -212,6 +212,7 @@ input:focus:invalid {
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: 20px;
     align-items: center;
     overflow: hidden;
 }
@@ -296,4 +297,8 @@ input:focus:invalid {
 .event.NFggs {
     margin-left: 7px;
     padding: 3px 0;
+}
+
+.event.end-evt.last-evt {
+    border-radius: 0 8px 8px 0;
 }
