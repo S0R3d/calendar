@@ -177,9 +177,9 @@ function fillDays() {
           year: y,
           month: m,
           day: d,
+          // TODO: aggiungere il limite di chiamata della SELECT in base a quanti posti liberi rimangano del rigquadro (max 3 eventi)
         },
         success: function (r) {
-          console.log(r);
           // for (let i = 0; i < day.children.length; i++) {
           //   const node = day.children[i];
           //   if (node.classList.contains("event")) {
@@ -190,27 +190,44 @@ function fillDays() {
           let a = r.split(" ").filter((e) => {
             return e;
           });
-
-          console.log("findIndex");
-          console.log(
-            a.findIndex((e) => {
-              return e.includes("event");
-            })
-          );
-
-          console.log(
-            r.split(" ").filter((e) => {
-              return e;
-            })
-          );
-          // FIXME: con eventi multipli non funziona
           let b = a;
-          while (b.includes('end-evt">\n')) {
-            days[++key].innerHTML += b
-              .splice(b.lastIndexOf('end-evt">\n') - 3)
-              .join(" ");
+          while (b.includes("---")) {
+            let y = key;
+            let index_end_event = b.indexOf("---");
+            let evt = b.splice(0, index_end_event + 1);
+            evt.splice(-1, 1);
+            let $thisDay = arr[key];
+            let next = arr[++y];
+            while (evt.includes('end-evt">\n')) {
+              if (
+                $thisDay.childElementCount - 1 != next.childElementCount - 1 &&
+                Math.abs($thisDay.childElementCount - next.childElementCount) >
+                  1
+              ) {
+                next.append($('<div class="event"></div>')[0]);
+                next.innerHTML += evt
+                  .splice(evt.lastIndexOf('end-evt">\n') - 3)
+                  .join(" ");
+              } else {
+                arr[y].innerHTML += evt
+                  .splice(evt.lastIndexOf('end-evt">\n') - 3)
+                  .join(" ");
+              }
+              $thisDay = arr[y];
+              next = arr[++y];
+            }
+            // TODO: aggiungere il br-radius all'ultimo elemento di un Fggs o NFggs
+            // let childArr = Array.from($thisDay.children).find((child) => {
+            //   return child.classList.contains("end-evt");
+            // });
+            // if (childArr) childArr.classList.add("last-evt");
+            let dayArr = Array.from(day.children).find((e) => {
+              return e.className == "event";
+            });
+            if (dayArr) {
+              dayArr.outerHTML = evt.join(" ");
+            } else day.innerHTML += evt.join(" ");
           }
-          day.innerHTML += b.join(" ");
         },
       });
       movingDate.nextDay();
