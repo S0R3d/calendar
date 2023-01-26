@@ -237,7 +237,6 @@ input:focus:invalid {
     overflow: hidden;
 }
 
-/* giorno completo senza ora di inizio e/o di fine */
 .event.Fgg {
     border: 2px solid var(--bg-event);
     border-radius: 8px;
@@ -253,12 +252,8 @@ input:focus:invalid {
     padding: 3px;
 }
 
-.event.Fgg .icon {
-    display: none;
-}
-
-/* giorni completi senza ora di inizio e/o di fine */
-.event.Fggs {
+.event.Fggs,
+.event.NFggs {
     border: 2px solid var(--bg-event);
     border-radius: 8px;
     border-top-right-radius: 0;
@@ -267,35 +262,28 @@ input:focus:invalid {
     background-color: var(--bg-event);
     color: #fff;
     padding: 1px;
-
 }
 
-.event.Fggs.end-evt {
+.event.Fggs.end-evt,
+.event.NFggs.end-evt {
     height: 20px;
     border-radius: 0;
 }
 
-.transparency .event.Fggs {
+.transparency .event.Fggs,
+.transparency .event.NFggs {
     border: none;
     background-color: var(--bg-t-event);
     color: rgba(0, 0, 0, 0.250);
     padding: 3px;
 }
 
-
-.event.Fggs .icon {
-    display: none;
-}
-
-/* giorno non completo con ora di inizio e di fine */
 .event.NFgg {
     margin-left: 7px;
     padding: 3px 0;
 }
 
-/* giorni non completi con ora di inizio e di fine */
 .event.NFggs {
-    margin-left: 7px;
     padding: 3px 0;
 }
 

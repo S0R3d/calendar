@@ -162,10 +162,6 @@ function bodyOnLoad() {
 function fillDays() {
   const days = document.querySelectorAll("div.day");
   days.forEach((day, key, arr) => {
-    // if (day.classList.contains("transparency")) {
-    //   while (day.childElementCount != 1)
-    //     day.removeChild(day.lastElementChild);
-    // }
     if (day.classList.contains(monthShort[now.getMonth()])) {
       let d = movingDate.arr[2];
       let m = movingDate.arr[1];
@@ -180,13 +176,6 @@ function fillDays() {
           // TODO: aggiungere il limite di chiamata della SELECT in base a quanti posti liberi rimangano del rigquadro (max 3 eventi)
         },
         success: function (r) {
-          // for (let i = 0; i < day.children.length; i++) {
-          //   const node = day.children[i];
-          //   if (node.classList.contains("event")) {
-          //     node.parentNode.removeChild(node);
-          //     --i;
-          //   }
-          // }
           let a = r.split(" ").filter((e) => {
             return e;
           });

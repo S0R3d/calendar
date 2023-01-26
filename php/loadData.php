@@ -1,12 +1,12 @@
 <?php
 require_once("../php/conn.php");
 $start = $_POST['year']."-".$_POST['month']."-".$_POST['day'];
-$query = "SELECT * FROM `events` WHERE `sDate` = :start ";
+// LIMIT 3 da implementare correttamente
+$query = "SELECT * FROM `events` WHERE `sDate` = :start LIMIT 3";
 $state = $db->prepare($query);
 $state->execute(['start' => $start]);
 $data = $state->fetchAll();
 if (sizeof($data)) {
-    // limit 3: 3 eventi vanno inseriti ora
     foreach($data as $i => $row) {
         $sD = $row['sDate'];
         $fD = $row['fDate'];
@@ -15,7 +15,6 @@ if (sizeof($data)) {
 
         if ($sD == $fD and ($sT == $fT and $fT == "00:00")) { // Fgg ?>
             <div class="event Fgg">
-                <div class="icon"></div>
                 <div class="title">
                     <?php echo $row['title'] ?>
                 </div>
@@ -25,7 +24,6 @@ if (sizeof($data)) {
             $diff = (substr($fD, 8) - substr($sD, 8));
         ?>
             <div class="event Fggs">
-                <div class="icon"></div>
                 <div class="title">
                     <?php echo $row['title'] ?>
                 </div>
@@ -33,8 +31,9 @@ if (sizeof($data)) {
         <?php
             for ($i=0; $i < $diff; $i++) { ?>
                <div class="event Fggs end-evt">
-                <div class="icon"></div>
-                <div class="title"></div>
+                <div class="title">
+                    <?php echo $row['title'] ?>
+                </div>
                </div> 
             <?php
             }
@@ -48,11 +47,9 @@ if (sizeof($data)) {
             </div>
         <?php
         } else if ($sD != $fD and $sT != $fT) { // NFggs 
-        // FIXME: i giorni multipli NON funzionano, carica solo nel primo giorni(sDate)
             $diff = (substr($fD,8) - substr($sD,8));
         ?>
             <div class="event NFggs">
-                <div class="icon"></div>
                 <div class="title">
                     <?php echo $sT ?>
                     <?php echo $row['title'] ?>
@@ -61,11 +58,13 @@ if (sizeof($data)) {
         <?php
             for ($i=0; $i < $diff; $i++) { ?>
                 <div class="event NFggs end-evt">
-                    <div class="icon"></div>
-                    <div class="title"></div>
+                    <div class="title">
+                        <?php echo $row['title'] ?>
+                    </div>
                 </div>
             <?php
             }
         }
+        echo "---";
     }
 } ?>
