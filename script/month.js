@@ -159,10 +159,17 @@ function bodyOnLoad() {
   formatDays();
 }
 
+function removeTrash(day) {
+  while (day.childElementCount != 1) {
+    day.removeChild(day.lastElementChild);
+  }
+}
+
 function fillDays() {
   const days = document.querySelectorAll("div.day");
   days.forEach((day, key, arr) => {
-    if (day.classList.contains(monthShort[now.getMonth()])) {
+    removeTrash(day);
+    if (day.classList.contains(monthShort[pageCurrentDate[1] - 1])) {
       let d = movingDate.arr[2];
       let m = movingDate.arr[1];
       let y = movingDate.arr[0];
