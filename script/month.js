@@ -160,7 +160,7 @@ function bodyOnLoad() {
 }
 
 function removeTrash(day) {
-  while (day.childElementCount != 1) {
+  while (day.childElementCount != 2) {
     day.removeChild(day.lastElementChild);
   }
 }
@@ -182,7 +182,13 @@ function fillDays() {
           day: d,
           // TODO: aggiungere il limite di chiamata della SELECT in base a quanti posti liberi rimangano del rigquadro (max 3 eventi)
         },
-        success: function (r) {
+        success: function (r, s, j) {
+          // TODO: rimuovere l'array(JSON String) presenti all'inizio
+          let indStart = r.indexOf("]");
+          let jsonData = r.substring(0, indStart + 1);
+          r = r.substring(indStart + 1, r.lenght);
+          console.log(jsonData);
+          console.log(r);
           let a = r.split(" ").filter((e) => {
             return e;
           });
@@ -227,7 +233,7 @@ function fillDays() {
       });
       movingDate.nextDay();
     } else {
-      while (day.childElementCount != 1) {
+      while (day.childElementCount != 2) {
         day.removeChild(day.lastElementChild);
       }
     }
