@@ -160,7 +160,7 @@ function bodyOnLoad() {
 }
 
 function removeTrash(day) {
-  while (day.childElementCount != 2) {
+  while (day.childElementCount != 1) {
     day.removeChild(day.lastElementChild);
   }
 }
@@ -180,15 +180,9 @@ function fillDays() {
           year: y,
           month: m,
           day: d,
-          // TODO: aggiungere il limite di chiamata della SELECT in base a quanti posti liberi rimangano del rigquadro (max 3 eventi)
+          limit: 3,
         },
         success: function (r, s, j) {
-          // TODO: rimuovere l'array(JSON String) presenti all'inizio
-          let indStart = r.indexOf("]");
-          let jsonData = r.substring(0, indStart + 1);
-          r = r.substring(indStart + 1, r.lenght);
-          console.log(jsonData);
-          console.log(r);
           let a = r.split(" ").filter((e) => {
             return e;
           });
@@ -233,9 +227,7 @@ function fillDays() {
       });
       movingDate.nextDay();
     } else {
-      while (day.childElementCount != 2) {
-        day.removeChild(day.lastElementChild);
-      }
+      removeTrash(day);
     }
   });
   resetMovingDate();
@@ -259,4 +251,72 @@ function pastDay(days) {
 
 $(document).ready(function () {
   fillDays();
+  $(document).on("click", (e) => {
+    e.preventDefault();
+    if (e.target.className == "other-evt") {
+      console.log(e);
+      let offset = $(e.target.parentElement).offset();
+      // FIXME: controllo con offesetParent perche ai sui bordi potrebbe non esserci posto
+      // top 496-50=446
+      let top = Math.round(offset.top);
+      // left 1014-25=987
+      let left = Math.round(offset.left);
+
+      let $container = $('<div class="event-view-container"></div>');
+      // TODO: eseguire select nel db per questo giorno per caricare tutti gli eventi presenti
+      let y = pageCurrentDate[0];
+      let m = pageCurrentDate[1];
+      let d = +e.target.parentElement.children[0].children[1].innerHTML;
+      $.ajax({
+        type: "POST",
+        url: "../php/loadData.php",
+        data: {
+          year: y,
+          month: m,
+          day: d,
+          limit: 100,
+        },
+        success: function (r) {
+          console.log(r);
+          // TODO: inserire gli eventi nell'container senza tener conto di cosa sono, just append(push) per tutti in ordine
+        },
+      });
+      $container.html(
+        '<div class="event-view"><div class="close-view-btn"><img src="../img/x.svg"></div><div class="date"><div class="date-name">Sat</div><div class="date-numb">28</div></div><div class="event Fggs"><div class="title">Test event view</div><div class="remove-evt"><img src="../img/x.svg"></div></div><div class="event Fggs"><div class="title">Test event view</div><div class="remove-evt"><img src="../img/x.svg"></div></div><div class="event Fgg"><div class="title">Test event view</div><div class="remove-evt"><img src="../img/x.svg"></div></div><div class="event Fgg"><div class="title">Test event view</div><div class="remove-evt"><img src="../img/x.svg"></div></div></div>'
+      );
+      $container.css({
+        top: top - 50,
+        left: left - 25,
+        display: "block",
+      });
+      $container.appendTo(e.target.parentElement);
+      $("div.close-view-btn").on("click", (e) => {
+        $container.remove();
+      });
+      $("div.remove-evt").on("click", (e) => {
+        console.log(e);
+        // TODO: remove THIS element from dblet y = pageCurrentDate[0];
+        // let m = pageCurrentDate[1];
+        // let d =
+        //   +e.currentTarget.parentElement.parentElement.children[1].children[1]
+        //     .innerHTML;
+        // // funziona se è presente un id
+        // // let id = +e.currentTarget.parentElement.attributes["event-id"].value;
+        // $.ajax({
+        //   type: "POST",
+        //   url: "../php/removeData.php",
+        //   data: {
+        //     y: y,
+        //     m: m,
+        //     d: d,
+        //     id: id,
+        //   },
+        //   success: function (r) {
+        //     console.log(r);
+        //   },
+        // });
+        //
+      });
+    }
+  });
 });
