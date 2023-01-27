@@ -30,54 +30,50 @@ function clearInput() {
   fTime.value = "";
 }
 
-if (nextBtn) {
-  nextBtn.addEventListener("click", () => {
-    if (pageCurrentDate[1] == 12) {
-      pageCurrentDate[1] = 1;
-      pageCurrentDate[0] += 1;
-    } else {
-      pageCurrentDate[1] += 1;
-      pageCurrentDate[0];
-    }
-    movingDate.nextMonth();
-    changeHeader();
-    formatDays();
-    fillDays();
-  });
-} else console.error("Not Found Button 'Next Month'!");
+if (!nextBtn) console.error("Not Found Button 'Next Month'!");
+nextBtn.addEventListener("click", () => {
+  if (pageCurrentDate[1] == 12) {
+    pageCurrentDate[1] = 1;
+    pageCurrentDate[0] += 1;
+  } else {
+    pageCurrentDate[1] += 1;
+    pageCurrentDate[0];
+  }
+  movingDate.nextMonth();
+  changeHeader();
+  formatDays();
+  fillDays();
+});
 
-if (prevBtn) {
-  prevBtn.addEventListener("click", () => {
-    if (pageCurrentDate[1] == 1) {
-      pageCurrentDate[1] = 12;
-      pageCurrentDate[0] -= 1;
-    } else {
-      pageCurrentDate[1] -= 1;
-      pageCurrentDate[0];
-    }
-    movingDate.prevMonth();
-    changeHeader();
-    formatDays();
-    fillDays();
-  });
-} else console.error("Not Found Button 'Previous Month'!");
+if (!prevBtn) console.error("Not Found Button 'Previous Month'!");
+prevBtn.addEventListener("click", () => {
+  if (pageCurrentDate[1] == 1) {
+    pageCurrentDate[1] = 12;
+    pageCurrentDate[0] -= 1;
+  } else {
+    pageCurrentDate[1] -= 1;
+    pageCurrentDate[0];
+  }
+  movingDate.prevMonth();
+  changeHeader();
+  formatDays();
+  fillDays();
+});
 
-if (todayBtn) {
-  todayBtn.addEventListener("click", () => {
-    resetCurrentDate();
-    changeHeader();
-    resetMovingDate();
-    formatDays();
-    fillDays();
-  });
-} else console.error("Not Found Button 'Today'");
+if (!todayBtn) console.error("Not Found Button 'Today'");
+todayBtn.addEventListener("click", () => {
+  resetCurrentDate();
+  changeHeader();
+  resetMovingDate();
+  formatDays();
+  fillDays();
+});
 
-if (addEventBtn) {
-  addEventBtn.addEventListener("click", () => {
-    document.querySelector("div.dropdown-content").classList.toggle("show");
-    clearInput();
-  });
-} else console.error("Not Found Button 'Add Event'");
+if (!addEventBtn) console.error("Not Found Button 'Add Event'");
+addEventBtn.addEventListener("click", () => {
+  document.querySelector("div.dropdown-content").classList.toggle("show");
+  clearInput();
+});
 
 title.setCustomValidity("Inserire un titolo per l'evento");
 sDate.setCustomValidity("Inserire una data di inizio valida");
@@ -85,26 +81,25 @@ fDate.setCustomValidity("Inserire una data di fine valida");
 sTime.setCustomValidity("Inserire un tempo di inizio valido");
 fTime.setCustomValidity("Inserire un tempo di fine valido");
 
-if (fullDayBtn) {
-  fullDayBtn.addEventListener("change", () => {
-    document.querySelector("div.sTime").classList.toggle("hide");
-    document.querySelector("div.fTime").classList.toggle("hide");
+if (!fullDayBtn) console.error("Not Found Checkbox 'Full Day'");
+fullDayBtn.addEventListener("change", () => {
+  document.querySelector("div.sTime").classList.toggle("hide");
+  document.querySelector("div.fTime").classList.toggle("hide");
 
-    if (fullDayBtn.checked) {
-      sTime.required = false;
-      fTime.required = false;
-      sTime.value = "";
-      fTime.value = "";
-      sTime.setCustomValidity("");
-      fTime.setCustomValidity("");
-    } else {
-      sTime.required = true;
-      fTime.required = true;
-      sTime.setCustomValidity("Inserire un tempo di inizio valido");
-      fTime.setCustomValidity("Inserire un tempo di fine valido");
-    }
-  });
-} else console.error("Not Found Checkbox 'Full Day'");
+  if (fullDayBtn.checked) {
+    sTime.required = false;
+    fTime.required = false;
+    sTime.value = "";
+    fTime.value = "";
+    sTime.setCustomValidity("");
+    fTime.setCustomValidity("");
+  } else {
+    sTime.required = true;
+    fTime.required = true;
+    sTime.setCustomValidity("Inserire un tempo di inizio valido");
+    fTime.setCustomValidity("Inserire un tempo di fine valido");
+  }
+});
 
 window.onclick = function (event) {
   if (
