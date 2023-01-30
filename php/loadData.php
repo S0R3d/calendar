@@ -40,7 +40,9 @@ if (sizeof($rtrn)) {
             </div>
         <?php
         } else if ($sD != $fD and ($sT == $fT and $fT == "00:00")) { // Fggs
-            $diff = (substr($fD, 8) - substr($sD, 8));
+            $target = strtotime($fD);
+            $current = strtotime($sD);
+            $diff = ((abs($target-$current)/60)/60)/24;
             ?>
             <div class="event Fggs" event-id="<?php echo $row["id"]?>">
                 <div class="title">
