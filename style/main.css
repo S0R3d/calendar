@@ -263,7 +263,7 @@ input:focus:invalid {
 
 .event>.title {
     font-size: 13px;
-    width: 100%;
+    width: 95%;
     white-space: nowrap;
     overflow: hidden;
 }
