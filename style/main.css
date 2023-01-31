@@ -355,12 +355,16 @@ input:focus:invalid {
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
+.event-view-container .event>.title {
+    width: 95%;
+}
+
 .event-view {
     display: flex;
     flex-direction: column;
     text-align: center;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
     overflow: hidden;
 
     border-radius: 8px;
