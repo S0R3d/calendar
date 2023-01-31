@@ -192,13 +192,12 @@ function fillDays() {
             let index_end_event = b.indexOf("---");
             let evt = b.splice(0, index_end_event + 1);
             evt.splice(-1, 1);
-            let $thisDay = arr[key];
+            let thisDay = arr[key];
             let next = arr[++y];
             while (evt.includes('end-evt">\n')) {
               if (
-                $thisDay.childElementCount - 1 != next.childElementCount - 1 &&
-                Math.abs($thisDay.childElementCount - next.childElementCount) >
-                  1
+                thisDay.childElementCount - 1 != next.childElementCount - 1 &&
+                Math.abs(thisDay.childElementCount - next.childElementCount) > 1
               ) {
                 next.append($('<div class="event"></div>')[0]);
                 next.innerHTML += evt
@@ -209,10 +208,10 @@ function fillDays() {
                   .splice(evt.lastIndexOf('end-evt">\n') - 3)
                   .join(" ");
               }
-              $thisDay = arr[y];
+              thisDay = arr[y];
               next = arr[++y];
             }
-            let childArr = Array.from($thisDay.children).find((child) => {
+            let childArr = Array.from(thisDay.children).find((child) => {
               return child.classList.contains("end-evt");
             });
             if (childArr) childArr.classList.add("last-evt");
@@ -254,6 +253,9 @@ $(document).ready(function () {
   $(document).on("click", (e) => {
     e.preventDefault();
     if (e.target.className == "other-evt") {
+      if ($(".event-view-container")) {
+        $(".event-view-container").remove();
+      }
       console.log(e);
       let offset = $(e.target.parentElement).offset();
       // FIXME: controllo con offesetParent perche ai sui bordi potrebbe non esserci posto
@@ -262,11 +264,38 @@ $(document).ready(function () {
       // left 1014-25=987
       let left = Math.round(offset.left);
 
-      let $container = $('<div class="event-view-container"></div>');
-      // TODO: eseguire select nel db per questo giorno per caricare tutti gli eventi presenti
+      const srcX = '<img src="./img/x.svg">';
+      const $container = $('<div class="event-view-container"></div>');
+      $container.css({
+        top: top - 50,
+        left: left - 25,
+      });
+      $container.html(
+        '<div class="event-view"><div class="close-view-btn"><img src="../img/x.svg"></div></div>'
+      );
+      $container.appendTo(e.target.parentElement);
+
+      const $viewer = $(".event-view");
+
+      const $date = $('<div class="date"></div>');
+      $date.append('<div class="date-name">Sat</div>');
+      $date.append('<div class="date-numb">31</div>');
+      $date.appendTo($viewer);
+
+      // per rimuovere gli eventi
+      // const $removeBtn = $('<div class="remove-evt"></div>');
+      // $removeBtn.append(srcX);
+      // $removeBtn.appendTo('event')
+
       let y = pageCurrentDate[0];
       let m = pageCurrentDate[1];
       let d = +e.target.parentElement.children[0].children[1].innerHTML;
+
+      $date[0].children[0].innerHTML =
+        daysName[new Date(y + "-" + m + "-" + d).getDay()];
+      $date[0].children[1].innerHTML = d;
+
+      // new Promise((res) => {
       $.ajax({
         type: "POST",
         url: "../php/loadData.php",
@@ -277,25 +306,41 @@ $(document).ready(function () {
           limit: 100,
         },
         success: function (r) {
-          console.log(r);
-          // TODO: inserire gli eventi nell'container senza tener conto di cosa sono, just append(push) per tutti in ordine
+          // console.log(r);
+          let f = "";
+          let a = r.split(" ").filter((e) => {
+            return e;
+          });
+          while (a.includes("---")) {
+            let ia = a.indexOf("---");
+            let evt = a.splice(0, ia + 1);
+            evt.splice(-1, 1);
+            if (evt.includes('end-evt">\n')) {
+              let ievt = evt.indexOf('end-evt">\n');
+              evt.splice(ievt - 3);
+            }
+            $viewer.append(evt.join(" "));
+            // f += evt.join(" ");
+          }
+          // res(f);
         },
       });
-      $container.html(
-        '<div class="event-view"><div class="close-view-btn"><img src="../img/x.svg"></div><div class="date"><div class="date-name">Sat</div><div class="date-numb">28</div></div><div class="event Fggs"><div class="title">Test event view</div><div class="remove-evt"><img src="../img/x.svg"></div></div><div class="event Fggs"><div class="title">Test event view</div><div class="remove-evt"><img src="../img/x.svg"></div></div><div class="event Fgg"><div class="title">Test event view</div><div class="remove-evt"><img src="../img/x.svg"></div></div><div class="event Fgg"><div class="title">Test event view</div><div class="remove-evt"><img src="../img/x.svg"></div></div></div>'
-      );
-      $container.css({
-        top: top - 50,
-        left: left - 25,
-        display: "block",
-      });
-      $container.appendTo(e.target.parentElement);
+      // }).then((val) => {
+      //   $viewer[0].innerHTML += val;
+      // });
+      // TODO: aggiungere all'interno di ogni 'event' dopo il 'title' il 'remove-evt' btn
+
+      $container.css("display", "block");
+
       $("div.close-view-btn").on("click", (e) => {
         $container.remove();
       });
+
+      // TODO: remove selected element
       $("div.remove-evt").on("click", (e) => {
         console.log(e);
-        // TODO: remove THIS element from dblet y = pageCurrentDate[0];
+        // TODO: remove THIS element from db
+        // let y = pageCurrentDate[0];
         // let m = pageCurrentDate[1];
         // let d =
         //   +e.currentTarget.parentElement.parentElement.children[1].children[1]
