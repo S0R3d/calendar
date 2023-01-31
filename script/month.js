@@ -183,6 +183,7 @@ function fillDays() {
           limit: 3,
         },
         success: function (r, s, j) {
+          console.log(r);
           let a = r.split(" ").filter((e) => {
             return e;
           });
@@ -195,11 +196,14 @@ function fillDays() {
             let thisDay = arr[key];
             let next = arr[++y];
             while (evt.includes('end-evt">\n')) {
+              // FIXME: possibili bug, gli eventi vuoti vengono sovrascritti quando vengono caricati gli eventi del giorni in cui sono presenti?
+              let diff = thisDay.childElementCount - next.childElementCount;
               if (
                 thisDay.childElementCount - 1 != next.childElementCount - 1 &&
-                Math.abs(thisDay.childElementCount - next.childElementCount) > 1
+                Math.abs(diff) > 1
               ) {
-                next.append($('<div class="event"></div>')[0]);
+                for (let i = 1; i < diff; i++)
+                  next.append($('<div class="event"></div>')[0]);
                 next.innerHTML += evt
                   .splice(evt.lastIndexOf('end-evt">\n') - 3)
                   .join(" ");
@@ -211,10 +215,14 @@ function fillDays() {
               thisDay = arr[y];
               next = arr[++y];
             }
-            let childArr = Array.from(thisDay.children).find((child) => {
-              return child.classList.contains("end-evt");
-            });
+            // let childArr = Array.from(thisDay.children).find((child) => {
+            //   return child.classList.contains("end-evt");
+            // });
+            let childArr = Array.from(thisDay.children, (child) => {
+              return child.classList.contains("end-evt") ? child : undefined;
+            }).at(-1);
             if (childArr) childArr.classList.add("last-evt");
+
             let dayArr = Array.from(day.children).find((e) => {
               return e.className == "event";
             });
@@ -230,6 +238,19 @@ function fillDays() {
     }
   });
   resetMovingDate();
+}
+
+/**
+ * Upgrade events in a specific day, with
+ * @param {HTMLDivElement | Element | Node | object} day
+ * @param {HTMLDivElement |Element | Node | object} lockItem
+ */
+// TODO: aggiornamento del 'day' in cui si elimina il giorno ma senza rimuovere dalla pagina 'event-view-container' (con fillDays() si rimuove)
+function refreshDay(day, lockItem) {
+  console.log(typeof day);
+  console.log(day);
+  console.log(typeof lockItem);
+  console.log(lockItem);
 }
 
 function pastDay(days) {
@@ -248,8 +269,6 @@ function pastDay(days) {
   });
 }
 
-function e(e) {}
-
 $(document).ready(function () {
   fillDays();
   $(document).on("click", (e) => {
@@ -258,20 +277,16 @@ $(document).ready(function () {
       if ($(".event-view-container")) {
         $(".event-view-container").remove();
       }
-      console.log(e);
       let offset = $(e.target.parentElement).offset();
-      // FIXME: controllo con offesetParent perche ai sui bordi potrebbe non esserci posto
-      // top 496-50=446
-      let top = Math.round(offset.top);
-      // left 1014-25=987
-      let left = Math.round(offset.left);
+      let top = offset.top >= 50 ? Math.round(offset.top) - 50 : 0;
+      let left = offset.left >= 25 ? Math.round(offset.left) - 25 : 0;
 
       const srcX = '<img src="../img/x.svg">';
 
       const $container = $('<div class="event-view-container"></div>');
       $container.css({
-        top: top - 50,
-        left: left - 25,
+        top: top,
+        left: left,
       });
       $container.html(
         '<div class="event-view"><div class="close-view-btn"><img src="../img/x.svg"></div></div>'
@@ -304,9 +319,8 @@ $(document).ready(function () {
             limit: 100,
           },
           success: function (r) {
-            console.log(r);
-            let a = r.split(" ").filter((e) => {
-              return e;
+            let a = r.split(" ").filter((b) => {
+              return b;
             });
             while (a.includes("---")) {
               let ia = a.indexOf("---");
@@ -324,11 +338,9 @@ $(document).ready(function () {
           },
         })
       ).done((rtn) => {
-        $("div.remove-evt").on("click", (e) => {
-          // e.target is 'img'
-          const t = e.currentTarget;
+        $("div.remove-evt").on("click", (ee) => {
+          const t = ee.currentTarget;
           console.log(t);
-
           let y = pageCurrentDate[0];
           let m = pageCurrentDate[1];
           let d =
@@ -344,7 +356,14 @@ $(document).ready(function () {
               id: id,
             },
             success: function (r) {
-              console.log(r);
+              $("div.event")
+                .filter((i, el) => {
+                  return $(el).attr("event-id") == id;
+                })
+                .remove();
+              // .css("background-color", "red");
+              // RUN fillDays() per l'aggiornamento del calendario
+              refreshDay(e.target.parentElement, $container[0]);
             },
           });
         });
