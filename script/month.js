@@ -248,6 +248,8 @@ function pastDay(days) {
   });
 }
 
+function e(e) {}
+
 $(document).ready(function () {
   fillDays();
   $(document).on("click", (e) => {
@@ -264,7 +266,8 @@ $(document).ready(function () {
       // left 1014-25=987
       let left = Math.round(offset.left);
 
-      const srcX = '<img src="./img/x.svg">';
+      const srcX = '<img src="../img/x.svg">';
+
       const $container = $('<div class="event-view-container"></div>');
       $container.css({
         top: top - 50,
@@ -278,14 +281,9 @@ $(document).ready(function () {
       const $viewer = $(".event-view");
 
       const $date = $('<div class="date"></div>');
-      $date.append('<div class="date-name">Sat</div>');
+      $date.append('<div class="date-name">Sun</div>');
       $date.append('<div class="date-numb">31</div>');
       $date.appendTo($viewer);
-
-      // per rimuovere gli eventi
-      // const $removeBtn = $('<div class="remove-evt"></div>');
-      // $removeBtn.append(srcX);
-      // $removeBtn.appendTo('event')
 
       let y = pageCurrentDate[0];
       let m = pageCurrentDate[1];
@@ -295,72 +293,67 @@ $(document).ready(function () {
         daysName[new Date(y + "-" + m + "-" + d).getDay()];
       $date[0].children[1].innerHTML = d;
 
-      // new Promise((res) => {
-      $.ajax({
-        type: "POST",
-        url: "../php/loadData.php",
-        data: {
-          year: y,
-          month: m,
-          day: d,
-          limit: 100,
-        },
-        success: function (r) {
-          // console.log(r);
-          let f = "";
-          let a = r.split(" ").filter((e) => {
-            return e;
-          });
-          while (a.includes("---")) {
-            let ia = a.indexOf("---");
-            let evt = a.splice(0, ia + 1);
-            evt.splice(-1, 1);
-            if (evt.includes('end-evt">\n')) {
-              let ievt = evt.indexOf('end-evt">\n');
-              evt.splice(ievt - 3);
+      $.when(
+        $.ajax({
+          type: "POST",
+          url: "../php/loadData.php",
+          data: {
+            year: y,
+            month: m,
+            day: d,
+            limit: 100,
+          },
+          success: function (r) {
+            console.log(r);
+            let a = r.split(" ").filter((e) => {
+              return e;
+            });
+            while (a.includes("---")) {
+              let ia = a.indexOf("---");
+              let evt = a.splice(0, ia + 1);
+              evt.splice(-1, 1);
+              if (evt.includes('end-evt">\n')) {
+                let ievt = evt.indexOf('end-evt">\n');
+                evt.splice(ievt - 3);
+              }
+              let removeBtn = `<div class="remove-evt">${srcX}</div>\n`;
+              let bsInd = evt.indexOf("</div>\n");
+              evt.splice(bsInd + 1, 0, removeBtn);
+              $viewer.append(evt.join(" "));
             }
-            $viewer.append(evt.join(" "));
-            // f += evt.join(" ");
-          }
-          // res(f);
-        },
+          },
+        })
+      ).done((rtn) => {
+        $("div.remove-evt").on("click", (e) => {
+          // e.target is 'img'
+          const t = e.currentTarget;
+          console.log(t);
+
+          let y = pageCurrentDate[0];
+          let m = pageCurrentDate[1];
+          let d =
+            +t.parentElement.parentElement.children[1].children[1].innerHTML;
+          let id = +t.parentElement.attributes["event-id"].value;
+          $.ajax({
+            type: "POST",
+            url: "../php/removeData.php",
+            data: {
+              y: y,
+              m: m,
+              d: d,
+              id: id,
+            },
+            success: function (r) {
+              console.log(r);
+            },
+          });
+        });
       });
-      // }).then((val) => {
-      //   $viewer[0].innerHTML += val;
-      // });
-      // TODO: aggiungere all'interno di ogni 'event' dopo il 'title' il 'remove-evt' btn
 
       $container.css("display", "block");
 
       $("div.close-view-btn").on("click", (e) => {
         $container.remove();
-      });
-
-      // TODO: remove selected element
-      $("div.remove-evt").on("click", (e) => {
-        console.log(e);
-        // TODO: remove THIS element from db
-        // let y = pageCurrentDate[0];
-        // let m = pageCurrentDate[1];
-        // let d =
-        //   +e.currentTarget.parentElement.parentElement.children[1].children[1]
-        //     .innerHTML;
-        // // funziona se è presente un id
-        // // let id = +e.currentTarget.parentElement.attributes["event-id"].value;
-        // $.ajax({
-        //   type: "POST",
-        //   url: "../php/removeData.php",
-        //   data: {
-        //     y: y,
-        //     m: m,
-        //     d: d,
-        //     id: id,
-        //   },
-        //   success: function (r) {
-        //     console.log(r);
-        //   },
-        // });
-        //
       });
     }
   });
