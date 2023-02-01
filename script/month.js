@@ -256,8 +256,10 @@ function refreshDay(day, lockItem) {
 function pastDay(days) {
   let y = now.getFullYear();
   let yCurr = pageCurrentDate[0];
+  let m = now.getMonth() + 1;
+  let mCurr = pageCurrentDate[1];
   days.forEach((day) => {
-    if (yCurr < y) {
+    if (yCurr < y || mCurr < m) {
       if (!day.classList.contains("transparency"))
         day.classList.add("transparency");
     } else if (yCurr == y) {
