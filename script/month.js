@@ -94,6 +94,9 @@ const movingDate = {
   getMonth: function () {
     return this.arr[1];
   },
+  getYear: function () {
+    return this.arr[0];
+  },
 };
 
 function resetCurrentDate() {
@@ -170,20 +173,26 @@ function fillDays() {
   days.forEach((day, key, arr) => {
     removeTrash(day);
     if (day.classList.contains(monthShort[pageCurrentDate[1] - 1])) {
-      let d = movingDate.arr[2];
-      let m = movingDate.arr[1];
-      let y = movingDate.arr[0];
+      let d = movingDate.getDay();
+      let m = movingDate.getMonth();
+      let y = movingDate.getYear();
+      // FIXME: regolare il flusso di esecuzione di $.ajax, in modo che si aspetti che abbia finito per andare al giorno successivo
+      // salta tutto il blocco sotto e va direttamente alla fine del ciclo foreach, percio movingDate non si incrementa
       $.ajax({
-        type: "POST",
+        method: "POST",
         url: "../php/loadData.php",
         data: {
           year: y,
           month: m,
           day: d,
+          // FIXME: change limit in base alla disponibilità del day
+          // limit: 3 - (day.childElementCount - 1),
           limit: 3,
         },
-        success: function (r, s, j) {
+        success: (r) => {
           console.log(r);
+          console.log(day);
+          console.log(day.childElementCount);
           let a = r.split(" ").filter((e) => {
             return e;
           });
@@ -202,6 +211,7 @@ function fillDays() {
                 thisDay.childElementCount - 1 != next.childElementCount - 1 &&
                 Math.abs(diff) > 1
               ) {
+                // FIXME: Bug 3 in TODO.txt scambio di ordine tra gli event
                 for (let i = 1; i < diff; i++)
                   next.append($('<div class="event"></div>')[0]);
                 next.innerHTML += evt
@@ -251,6 +261,7 @@ function refreshDay(day, lockItem) {
   console.log(day);
   console.log(typeof lockItem);
   console.log(lockItem);
+  // event: DOMNodeRemovedFromDocument
 }
 
 function pastDay(days) {
@@ -312,7 +323,7 @@ $(document).ready(function () {
 
       $.when(
         $.ajax({
-          type: "POST",
+          method: "POST",
           url: "../php/loadData.php",
           data: {
             year: y,
@@ -349,7 +360,7 @@ $(document).ready(function () {
             +t.parentElement.parentElement.children[1].children[1].innerHTML;
           let id = +t.parentElement.attributes["event-id"].value;
           $.ajax({
-            type: "POST",
+            method: "POST",
             url: "../php/removeData.php",
             data: {
               y: y,
