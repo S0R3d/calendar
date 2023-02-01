@@ -24,9 +24,6 @@ $months = array(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tommi's Calendar</title>
-    <script src="https://code.jquery.com/jquery-3.6.3.js"
-        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-    <!-- <script src="script/jquery-3.6.3.js"></script> -->
     <link rel="stylesheet" href="style/main.css">
 </head>
 <body onload="bodyOnLoad()">
@@ -44,6 +41,11 @@ $months = array(
         <?php include('php/footer.php'); ?>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script>
+        window.jQuery || document.write('<script src="script/jquery-3.6.3.js"><\/script>');
+    </script>
     <script src="script/month.js"></script>
     <script src="script/header.js"></script>
 </body>
