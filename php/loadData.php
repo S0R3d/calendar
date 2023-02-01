@@ -3,19 +3,13 @@ require_once("conn.php");
 $date = $_POST['year']."-".$_POST['month']."-".$_POST['day'];
 $limit = (int) $_POST['limit'];
 
-// $firstOfAll = array(1 => $_POST);
-
 $query1 = "SELECT count(`id`) FROM `events` WHERE `sDate` = :date";
 $state1 = $db->prepare($query1);
 $state1->execute(['date' => $date]);
 $res = $state1->fetch();
 $count = $res[0];
-// if (sizeof($res))
-//     array_unshift($firstOfAll, $count);
-// echo json_encode($firstOfAll);
 
 if ($count > $limit) {
-    // mandare solo 2 elementi piu il blocco other
     --$limit;
 }
 
