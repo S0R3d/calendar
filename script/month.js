@@ -177,7 +177,6 @@ function fillDays() {
       let m = movingDate.getMonth();
       let y = movingDate.getYear();
       // FIXME: regolare il flusso di esecuzione di $.ajax, in modo che si aspetti che abbia finito per andare al giorno successivo
-      // salta tutto il blocco sotto e va direttamente alla fine del ciclo foreach, percio movingDate non si incrementa
       $.ajax({
         method: "POST",
         url: "../php/loadData.php",
@@ -191,8 +190,6 @@ function fillDays() {
         },
         success: (r) => {
           if (!r) return;
-          // console.log(r);
-          // TODO: metodo google event(completo giorni multipli) senza end-evt aggiuntivi con position absolute
           // let w = r.split(/(?=<div)/);
           let w = r.split("---");
           w.forEach((elW) => {
@@ -253,12 +250,9 @@ function fillDays() {
  * @param {HTMLDivElement |Element | Node | object} lockItem
  */
 // TODO: aggiornamento del 'day' in cui si elimina il giorno ma senza rimuovere dalla pagina 'event-view-container' (con fillDays() si rimuove)
-function refreshDay(day, lockItem) {
+function refreshDay(day) {
   console.log(typeof day);
   console.log(day);
-  console.log(typeof lockItem);
-  console.log(lockItem);
-  // event: DOMNodeRemovedFromDocument
 }
 
 function pastDay(days) {
@@ -329,7 +323,6 @@ $(document).ready(function () {
           },
           success: function (r) {
             if (!r) return;
-            console.log(r);
             let a = r.split("---");
             a.forEach((el) => {
               if (el.includes("end-evt")) {
@@ -344,15 +337,9 @@ $(document).ready(function () {
               let removeBtn = `</div><div class="remove-evt">${srcX}</div>`;
               let lastCloseDiv = el.lastIndexOf("</div>");
               if (lastCloseDiv !== -1) {
-                console.log("el and last");
-                console.log(el);
-                console.log(lastCloseDiv);
                 let sub = el.substring(lastCloseDiv, el.length);
-                console.log(sub);
                 // el = el.replace(/_([^_]*)$/, removeBtn + "$1");
                 el = el.replace(sub, removeBtn);
-                console.log("el finale");
-                console.log(el);
                 $viewer.append(el);
               }
             });
@@ -361,7 +348,6 @@ $(document).ready(function () {
       ).done((rtn) => {
         $("div.remove-evt").on("click", (ee) => {
           const t = ee.currentTarget;
-          console.log(t);
           let y = pageCurrentDate[0];
           let m = pageCurrentDate[1];
           let d =
@@ -376,17 +362,18 @@ $(document).ready(function () {
               d: d,
               id: id,
             },
-            success: function (r) {
-              $("div.event")
-                .filter((i, el) => {
-                  return $(el).attr("event-id") == id;
-                })
-                .remove();
-              // .css("background-color", "red");
-              // RUN fillDays() per l'aggiornamento del calendario
-              refreshDay(e.target.parentElement, $container[0]);
-            },
+            success: function (r) {},
           });
+          // remove all event with specific 'event-id' from doc
+          $("div.event")
+            .filter((i, el) => {
+              return $(el).attr("event-id") == id;
+            })
+            .remove();
+          // remove only event in 'event-view-container'
+          // $(t.parentElement).remove();
+          // RUN fillDays() per l'aggiornamento del calendario
+          refreshDay(e.target.parentElement, $container[0]);
         });
       });
 
