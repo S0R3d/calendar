@@ -190,56 +190,53 @@ function fillDays() {
           limit: 3,
         },
         success: (r) => {
-          console.log(r);
-          console.log(day);
-          console.log(day.childElementCount);
-          let a = r.split(" ").filter((e) => {
-            return e;
-          });
-          let b = a;
-          while (b.includes("---")) {
-            let y = key;
-            let index_end_event = b.indexOf("---");
-            let evt = b.splice(0, index_end_event + 1);
-            evt.splice(-1, 1);
+          if (!r) return;
+          // console.log(r);
+          // TODO: metodo google event(completo giorni multipli) senza end-evt aggiuntivi con position absolute
+          // let w = r.split(/(?=<div)/);
+          let w = r.split("---");
+          w.forEach((elW) => {
+            let yInd = key;
             let thisDay = arr[key];
-            let next = arr[++y];
-            while (evt.includes('end-evt">\n')) {
-              // FIXME: possibili bug, gli eventi vuoti vengono sovrascritti quando vengono caricati gli eventi del giorni in cui sono presenti?
+            let next = arr[++yInd];
+            // FIXME: possibili bug, gli eventi vuoti vengono sovrascritti quando vengono caricati gli eventi del giorni in cui sono presenti?
+            while (elW.includes("end-evt")) {
+              // FIXME: Bug 3 in TODO.txt scambio di ordine tra gli event
+              let ind = elW.lastIndexOf("end-evt");
+              while (ind >= 0) {
+                if (elW[ind] == "<") break;
+                --ind;
+              }
               let diff = thisDay.childElementCount - next.childElementCount;
               if (
-                thisDay.childElementCount - 1 != next.childElementCount - 1 &&
+                thisDay.childElementCount != next.childElementCount &&
                 Math.abs(diff) > 1
               ) {
-                // FIXME: Bug 3 in TODO.txt scambio di ordine tra gli event
                 for (let i = 1; i < diff; i++)
                   next.append($('<div class="event"></div>')[0]);
-                next.innerHTML += evt
-                  .splice(evt.lastIndexOf('end-evt">\n') - 3)
-                  .join(" ");
+                let adding = elW.substring(ind, elW.length);
+                next.innerHTML += adding;
+                elW = elW.replace(adding, "");
               } else {
-                arr[y].innerHTML += evt
-                  .splice(evt.lastIndexOf('end-evt">\n') - 3)
-                  .join(" ");
+                let adding = elW.substring(ind, elW.length);
+                arr[yInd].innerHTML += adding;
+                elW = elW.replace(adding, "");
               }
-              thisDay = arr[y];
-              next = arr[++y];
+              thisDay = arr[yInd];
+              next = arr[++yInd];
             }
-            // let childArr = Array.from(thisDay.children).find((child) => {
-            //   return child.classList.contains("end-evt");
-            // });
             let childArr = Array.from(thisDay.children, (child) => {
               return child.classList.contains("end-evt") ? child : undefined;
             }).at(-1);
+            // FIXME: viene aggiunto last-evt ad un end-evt non in fondo
             if (childArr) childArr.classList.add("last-evt");
 
             let dayArr = Array.from(day.children).find((e) => {
               return e.className == "event";
             });
-            if (dayArr) {
-              dayArr.outerHTML = evt.join(" ");
-            } else day.innerHTML += evt.join(" ");
-          }
+            if (dayArr) dayArr.outerHTML = elW;
+            else day.innerHTML += elW;
+          });
         },
       });
       movingDate.nextDay();
@@ -285,7 +282,6 @@ function pastDay(days) {
 $(document).ready(function () {
   fillDays();
   $(document).on("click", (e) => {
-    e.preventDefault();
     if (e.target.className == "other-evt") {
       if ($(".event-view-container")) {
         $(".event-view-container").remove();
@@ -332,22 +328,34 @@ $(document).ready(function () {
             limit: 100,
           },
           success: function (r) {
-            let a = r.split(" ").filter((b) => {
-              return b;
-            });
-            while (a.includes("---")) {
-              let ia = a.indexOf("---");
-              let evt = a.splice(0, ia + 1);
-              evt.splice(-1, 1);
-              if (evt.includes('end-evt">\n')) {
-                let ievt = evt.indexOf('end-evt">\n');
-                evt.splice(ievt - 3);
+            if (!r) return;
+            console.log(r);
+            let a = r.split("---");
+            a.forEach((el) => {
+              if (el.includes("end-evt")) {
+                let indEndEvt = el.indexOf("end-evt");
+                while (indEndEvt >= 0) {
+                  if (el[indEndEvt] == "<") break;
+                  --indEndEvt;
+                }
+                let sub = el.substring(indEndEvt, el.length);
+                el = el.replace(sub, "");
               }
-              let removeBtn = `<div class="remove-evt">${srcX}</div>\n`;
-              let bsInd = evt.indexOf("</div>\n");
-              evt.splice(bsInd + 1, 0, removeBtn);
-              $viewer.append(evt.join(" "));
-            }
+              let removeBtn = `</div><div class="remove-evt">${srcX}</div>`;
+              let lastCloseDiv = el.lastIndexOf("</div>");
+              if (lastCloseDiv !== -1) {
+                console.log("el and last");
+                console.log(el);
+                console.log(lastCloseDiv);
+                let sub = el.substring(lastCloseDiv, el.length);
+                console.log(sub);
+                // el = el.replace(/_([^_]*)$/, removeBtn + "$1");
+                el = el.replace(sub, removeBtn);
+                console.log("el finale");
+                console.log(el);
+                $viewer.append(el);
+              }
+            });
           },
         })
       ).done((rtn) => {
