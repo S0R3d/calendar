@@ -14,7 +14,7 @@ if ($count > $limit) {
     --$limit;
 }
 
-$query = "SELECT * FROM `events` WHERE `sDate` = :date LIMIT :limit";
+$query = "SELECT * FROM `events` WHERE `sDate` = :date ORDER BY `fDate` DESC LIMIT :limit";
 $state = $db->prepare($query);
 $state->bindParam('date', $date, PDO::PARAM_STR);
 $state->bindParam('limit', $limit, PDO::PARAM_INT);
@@ -28,12 +28,12 @@ if (sizeof($rtrn)) {
         $fT = substr($row['fTime'], 0, strlen($row['fTime']) - 3);
 
         if ($sD == $fD and ($sT == $fT and $fT == "00:00")) { // Fgg
-            $RESULT .= '<div class="event Fgg" event-id="'.$row["id"].'"><div class="title">'.$row["title"].'</div></div>';
+            $RESULT .= '<div class="event Fgg" event-id="'.$row["id"].'" style="order: '.($i+1).';"><div class="title">'.$row["title"].'</div></div>';
         } else if ($sD != $fD and ($sT == $fT and $fT == "00:00")) { // Fggs
             $target = strtotime($fD);
             $current = strtotime($sD);
             $diff = ((abs($target-$current)/60)/60)/24;
-            $RESULT .= '<div class="event Fggs" event-id="'.$row["id"].'"><div class="title">'.$row["title"].'</div></div>';
+            $RESULT .= '<div class="event Fggs" event-id="'.$row["id"].'" style="order: '.($i+1).';"><div class="title">'.$row["title"].'</div></div>';
             for ($i = 0; $i < $diff; $i++) {
                 $last = $i==0 ? 'last-evt' : '';
                 $RESULT .= '<div class="event Fggs end-evt '.$last.'"><div class="title">'.$row["title"].'</div></div>';

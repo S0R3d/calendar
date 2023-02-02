@@ -176,7 +176,6 @@ function fillDays() {
       let d = movingDate.getDay();
       let m = movingDate.getMonth();
       let y = movingDate.getYear();
-      // FIXME: regolare il flusso di esecuzione di $.ajax, in modo che si aspetti che abbia finito per andare al giorno successivo
       $.ajax({
         method: "POST",
         url: "../php/loadData.php",
@@ -198,7 +197,6 @@ function fillDays() {
             let next = arr[++yInd];
             // FIXME: possibili bug, gli eventi vuoti vengono sovrascritti quando vengono caricati gli eventi del giorni in cui sono presenti?
             while (elW.includes("end-evt")) {
-              // FIXME: Bug 3 in TODO.txt scambio di ordine tra gli event
               let ind = elW.lastIndexOf("end-evt");
               while (ind >= 0) {
                 if (elW[ind] == "<") break;
@@ -209,6 +207,7 @@ function fillDays() {
                 thisDay.childElementCount != next.childElementCount &&
                 Math.abs(diff) > 1
               ) {
+                // FIXME: bug on screenshoot, si generano event vuoti non necessari
                 for (let i = 1; i < diff; i++)
                   next.append($('<div class="event"></div>')[0]);
                 let adding = elW.substring(ind, elW.length);
