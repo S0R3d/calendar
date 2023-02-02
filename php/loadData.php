@@ -1,5 +1,6 @@
 <?php
 require_once("conn.php");
+$RESULT = '';
 $date = $_POST['year']."-".$_POST['month']."-".$_POST['day'];
 $limit = (int) $_POST['limit'];
 
@@ -26,65 +27,30 @@ if (sizeof($rtrn)) {
         $sT = substr($row['sTime'], 0, strlen($row['sTime']) - 3);
         $fT = substr($row['fTime'], 0, strlen($row['fTime']) - 3);
 
-        if ($sD == $fD and ($sT == $fT and $fT == "00:00")) { // Fgg ?>
-            <div class="event Fgg" event-id="<?php echo $row["id"]?>">
-                <div class="title">
-                    <?php echo $row["title"] ?>
-                </div>
-            </div>
-        <?php
+        if ($sD == $fD and ($sT == $fT and $fT == "00:00")) { // Fgg
+            $RESULT .= '<div class="event Fgg" event-id="'.$row["id"].'"><div class="title">'.$row["title"].'</div></div>';
         } else if ($sD != $fD and ($sT == $fT and $fT == "00:00")) { // Fggs
             $target = strtotime($fD);
             $current = strtotime($sD);
             $diff = ((abs($target-$current)/60)/60)/24;
-            ?>
-            <div class="event Fggs" event-id="<?php echo $row["id"]?>">
-                <div class="title">
-                    <?php echo $row["title"] ?>
-                </div>
-            </div>
-        <?php
-            for ($i = 0; $i < $diff; $i++) { ?>
-               <div class="event Fggs end-evt">
-                <div class="title">
-                    <?php echo $row["title"] ?>
-                </div>
-               </div> 
-            <?php
+            $RESULT .= '<div class="event Fggs" event-id="'.$row["id"].'"><div class="title">'.$row["title"].'</div></div>';
+            for ($i = 0; $i < $diff; $i++) {
+                $RESULT .= '<div class="event Fggs end-evt"><div class="title">'.$row["title"].'</div></div>';
             }
-        } else if ($sD == $fD and $sT != $fT) { // NFgg ?>
-            <div class="event NFgg" event-id="<?php echo $row["id"]?>">
-                <div class="icon"></div>
-                <div class="title">
-                    <?php echo $sT ?>
-                    <?php echo $row["title"] ?>
-                </div>
-            </div>
-        <?php
+        } else if ($sD == $fD and $sT != $fT) { // NFgg
+            $RESULT .= '<div class="event NFgg" event-id="'.$row["id"].'"><div class="icon"></div><div class="title">'.$sT.' '.$row["title"].'</div></div>';
         } else if ($sD != $fD and $sT != $fT) { // NFggs 
             $diff = (substr($fD, 8) - substr($sD, 8));
-            ?>
-            <div class="event NFggs" event-id="<?php echo $row["id"]?>">
-                <div class="title">
-                    <?php echo $sT ?>
-                    <?php echo $row["title"] ?>
-                </div>
-            </div>
-        <?php
-            for ($i = 0; $i < $diff; $i++) { ?>
-                <div class="event NFggs end-evt">
-                    <div class="title">
-                        <?php echo $row["title"] ?>
-                    </div>
-                </div>
-            <?php
+            $RESULT .= '<div class="event NFggs" event-id="'.$row["id"].'"><div class="title">'.$sT.' '.$row["title"].'</div></div>';
+            for ($i = 0; $i < $diff; $i++) {
+                $RESULT .= '<div class="event NFggs end-evt"><div class="title">'.$row["title"].'</div></div>';
             }
         }
-        echo "---";
+        $RESULT .= "---";
     }
-    if ($limit == 2 && $count > 3) { ?>
-        <div class="other-evt">Altri <?php echo $count-$limit?></div>
-    <?php
-        echo "---";
+    if ($limit == 2 && $count > 3) {
+        $RESULT .= '<div class="other-evt">Altri '.$count-$limit.'</div>';
+        $RESULT .= "---";
     }
-} ?>
+    echo $RESULT;
+}
