@@ -163,7 +163,7 @@ function a(e) {
   if (fD < sD) return;
 
   const MIN_TIME_VALUE = "00:00:00";
-  const MAX_TIME_VALUE = "23:59:59";
+  const MAX_TIME_VALUE = "00:00:00";
   let sT = e.target[4].value,
     fT = e.target[5].value;
   if (e.target[3].checked) {
