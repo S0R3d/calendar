@@ -35,7 +35,8 @@ if (sizeof($rtrn)) {
             $diff = ((abs($target-$current)/60)/60)/24;
             $RESULT .= '<div class="event Fggs" event-id="'.$row["id"].'"><div class="title">'.$row["title"].'</div></div>';
             for ($i = 0; $i < $diff; $i++) {
-                $RESULT .= '<div class="event Fggs end-evt"><div class="title">'.$row["title"].'</div></div>';
+                $last = $i==0 ? 'last-evt' : '';
+                $RESULT .= '<div class="event Fggs end-evt '.$last.'"><div class="title">'.$row["title"].'</div></div>';
             }
         } else if ($sD == $fD and $sT != $fT) { // NFgg
             $RESULT .= '<div class="event NFgg" event-id="'.$row["id"].'"><div class="icon"></div><div class="title">'.$sT.' '.$row["title"].'</div></div>';
@@ -43,7 +44,8 @@ if (sizeof($rtrn)) {
             $diff = (substr($fD, 8) - substr($sD, 8));
             $RESULT .= '<div class="event NFggs" event-id="'.$row["id"].'"><div class="title">'.$sT.' '.$row["title"].'</div></div>';
             for ($i = 0; $i < $diff; $i++) {
-                $RESULT .= '<div class="event NFggs end-evt"><div class="title">'.$row["title"].'</div></div>';
+                $last = $i==0 ? 'last-evt' : '';
+                $RESULT .= '<div class="event NFggs end-evt '.$last.'"><div class="title">'.$row["title"].'</div></div>';
             }
         }
         $RESULT .= "---";

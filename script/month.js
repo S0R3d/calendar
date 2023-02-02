@@ -222,12 +222,6 @@ function fillDays() {
               thisDay = arr[yInd];
               next = arr[++yInd];
             }
-            let childArr = Array.from(thisDay.children, (child) => {
-              return child.classList.contains("end-evt") ? child : undefined;
-            }).at(-1);
-            // FIXME: viene aggiunto last-evt ad un end-evt non in fondo
-            if (childArr) childArr.classList.add("last-evt");
-
             let dayArr = Array.from(day.children).find((e) => {
               return e.className == "event";
             });
