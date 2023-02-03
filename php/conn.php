@@ -1,5 +1,5 @@
 <?php
-$db = null;
+global $db;
 try {
     $db = new PDO('mysql:host=localhost;dbname=calendar', 'root', 'root');
 } catch (PDOException $th) {

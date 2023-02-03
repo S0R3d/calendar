@@ -1,5 +1,6 @@
 <?php
 require_once("conn.php");
+global $db;
 $RESULT = '';
 $date = $_POST['year']."-".$_POST['month']."-".$_POST['day'];
 $limit = (int) $_POST['limit'];
