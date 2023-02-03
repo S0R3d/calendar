@@ -46,6 +46,7 @@ footer>* {
     align-items: center;
 }
 
+/* Header */
 header {
     margin-bottom: 5px;
 }
@@ -113,6 +114,7 @@ header>.header-month.header-year {
     grid-column: 3/5;
 }
 
+/* Header -> add event */
 header>.add-event {
     grid-column: 6/7;
 }
@@ -180,10 +182,6 @@ input[type="time"] {
     box-sizing: border-box;
 }
 
-.required {
-    box-shadow: 0 0 5px 1px rgb(255, 0, 0);
-}
-
 input:invalid {
     border-color: #900;
     background-color: #fdd;
@@ -193,7 +191,12 @@ input:focus:invalid {
     outline: none;
 }
 
-/* Calendar section style */
+.required {
+    box-shadow: 0 0 5px 1px rgb(255, 0, 0);
+}
+
+
+/* */
 .calendar {
     border-top: 1px solid var(--brd-color);
     border-left: 1px solid var(--brd-color);
@@ -207,6 +210,7 @@ input:focus:invalid {
     grid-template-columns: repeat(7, minmax(calc(100% * (1/7)), calc(100%* (1/7))));
 }
 
+/* Day */
 .day {
     border-right: 0.5px solid var(--brd-color);
     border-bottom: 0.5px solid var(--brd-color);
@@ -239,6 +243,8 @@ input:focus:invalid {
     flex-direction: column;
 }
 
+
+/* Event */
 .event {
     display: flex;
     flex-direction: row;
@@ -276,7 +282,7 @@ input:focus:invalid {
     padding: 1px;
 }
 
-.transparency .event.Fgg {
+.transparency>.event.Fgg {
     border: none;
     background-color: var(--bg-t-event);
     color: rgba(0, 0, 0, 0.250);
@@ -294,19 +300,20 @@ input:focus:invalid {
     color: #fff;
 }
 
+.transparency>.event.Fggs,
+.transparency>.event.NFggs {
+    border: none;
+    background-color: var(--bg-t-event);
+    color: rgba(0, 0, 0, 0.250);
+    padding: 3px;
+}
+
 .event.Fggs.end-evt,
 .event.NFggs.end-evt {
     height: 20px;
     border-radius: 0;
 }
 
-.transparency .event.Fggs,
-.transparency .event.NFggs {
-    border: none;
-    background-color: var(--bg-t-event);
-    color: rgba(0, 0, 0, 0.250);
-    padding: 3px;
-}
 
 .event.NFgg {
     padding: 3px 2px;
@@ -321,6 +328,7 @@ input:focus:invalid {
     border-radius: 0 8px 8px 0;
 }
 
+/* Other Event (Altri [Number]...) */
 .other-evt {
     order: 5;
     width: 100%;
@@ -338,6 +346,10 @@ input:focus:invalid {
     border: 2px solid rgb(222, 222, 222);
     border-radius: 8px;
     background-color: rgb(222, 222, 222);
+}
+
+.event.empty {
+    background-color: #900;
 }
 
 /* Event View */
