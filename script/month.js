@@ -1,5 +1,7 @@
 const now = new Date();
 console.log(now.toDateString());
+const MAX_EVENT = 3;
+const MAX_CHILD_IN_DAY = 4;
 const daysName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const months = [
   "January",
@@ -97,6 +99,9 @@ const movingDate = {
   getYear: function () {
     return this.arr[0];
   },
+  toString: function () {
+    return `${this.getYear()}-${this.getMonth()}-${this.getDay()}`;
+  },
 };
 
 function resetCurrentDate() {
@@ -191,6 +196,18 @@ function fillDays() {
           if (!r) return;
           // let w = r.split(/(?=<div)/);
           let w = r.split("---");
+          w.pop();
+          if (w.length > MAX_EVENT) {
+            const r = w.length - (MAX_EVENT - 1);
+            let other = '<div class="other-evt">Altri ' + r + "</div>";
+            do {
+              w.pop();
+            } while (w.length > MAX_EVENT - 1);
+            w.push(other);
+          }
+          // else if (w.length <= MAX_EVENT) {
+          //   // Numero entro il limite non serve other-evt
+          // }
           w.forEach((elW) => {
             let yInd = key;
             let thisDay = arr[key];
@@ -207,9 +224,10 @@ function fillDays() {
                 thisDay.childElementCount != next.childElementCount &&
                 Math.abs(diff) > 1
               ) {
-                // FIXME: bug on screenshoot, si generano event vuoti non necessari
-                for (let i = 1; i < diff; i++)
-                  next.append($('<div class="event"></div>')[0]);
+                // FIXME: EVENTI VUOTI DISATTIVATI PER BUG
+                // TODO: DA SOSTITUIRE il metodo di utilizzo degli eventi vuoti per 'abbassare eventi aggiunti a giorni succ.'
+                // for (let i = 1; i < diff; i++)
+                //   next.append($('<div class="event empty"></div>')[0]);
                 let adding = elW.substring(ind, elW.length);
                 next.innerHTML += adding;
                 elW = elW.replace(adding, "");
@@ -228,6 +246,18 @@ function fillDays() {
             else day.innerHTML += elW;
           });
         },
+        complete: () => {
+          // FIXME: funziona solo se il giorno ha ricevuto eventi aggiuntivi dal giorno precedente prima della fine dell'eseguzione della richiesta di questo giorno altrimenti non fa perche per lui gli eventi non sono ancora presenti (async)
+          let nChild = day.childElementCount;
+          if (nChild <= 4) return;
+
+          let dif = nChild - MAX_CHILD_IN_DAY;
+          let oe = '<div class="other-evt">Altri ' + dif + "</div>";
+          while (day.childElementCount > MAX_CHILD_IN_DAY - 1) {
+            day.removeChild(day.children[day.childElementCount - 1]);
+          }
+          day.append($(oe)[0]);
+        },
       });
       movingDate.nextDay();
     } else {
@@ -240,7 +270,6 @@ function fillDays() {
 /**
  * Upgrade events in a specific day, with
  * @param {HTMLDivElement | Element | Node | object} day
- * @param {HTMLDivElement |Element | Node | object} lockItem
  */
 // TODO: aggiornamento del 'day' in cui si elimina il giorno ma senza rimuovere dalla pagina 'event-view-container' (con fillDays() si rimuove)
 function refreshDay(day) {
@@ -298,6 +327,7 @@ $(document).ready(function () {
 
       let y = pageCurrentDate[0];
       let m = pageCurrentDate[1];
+      // FIXME:  throw an error with new design idea
       let d = +e.target.parentElement.children[0].children[1].innerHTML;
 
       $date[0].children[0].innerHTML =

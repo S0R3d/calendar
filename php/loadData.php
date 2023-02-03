@@ -15,10 +15,11 @@ if ($count > $limit) {
     --$limit;
 }
 
-$query = "SELECT * FROM `events` WHERE `sDate` = :date ORDER BY `fDate` DESC LIMIT :limit";
+// $query = "SELECT * FROM `events` WHERE `sDate` = :date ORDER BY `fDate` DESC LIMIT :limit";
+$query = "SELECT * FROM `events` WHERE `sDate` = :date ORDER BY `fDate` DESC";
 $state = $db->prepare($query);
 $state->bindParam('date', $date, PDO::PARAM_STR);
-$state->bindParam('limit', $limit, PDO::PARAM_INT);
+// $state->bindParam('limit', $limit, PDO::PARAM_INT);
 $state->execute();
 $rtrn = $state->fetchAll();
 if (sizeof($rtrn)) {
@@ -51,9 +52,9 @@ if (sizeof($rtrn)) {
         }
         $RESULT .= "---";
     }
-    if ($limit == 2 && $count > 3) {
-        $RESULT .= '<div class="other-evt">Altri '.$count-$limit.'</div>';
-        $RESULT .= "---";
-    }
+    // if ($limit == 2 && $count > 3) {
+    //     $RESULT .= '<div class="other-evt">Altri '.$count-$limit.'</div>';
+    //     $RESULT .= "---";
+    // }
     echo $RESULT;
 }
