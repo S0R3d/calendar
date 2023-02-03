@@ -348,7 +348,7 @@ input:focus:invalid {
     background-color: rgb(222, 222, 222);
 }
 
-.event.empty {
+.event.empty-evt {
     background-color: #900;
 }
 
