@@ -17,6 +17,11 @@ if ($count > $limit) {
 
 // $query = "SELECT * FROM `events` WHERE `sDate` = :date ORDER BY `fDate` DESC LIMIT :limit";
 $query = "SELECT * FROM `events` WHERE `sDate` = :date ORDER BY `fDate` DESC";
+// $query = "SELECT *
+// FROM `event`
+// WHERE `event`.`start_date` = :date
+// ORDER BY
+// CASE WHEN `event`.`real_event` IS NULL THEN 1 ELSE 0 END, `event`.`real_event`";
 $state = $db->prepare($query);
 $state->bindParam('date', $date, PDO::PARAM_STR);
 // $state->bindParam('limit', $limit, PDO::PARAM_INT);
