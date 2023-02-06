@@ -9,8 +9,10 @@ CREATE TABLE IF NOT EXISTS `events`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
     `sDate` DATE NOT NULL,
-    `sTime` TIME,
     `fDate` DATE NOT NULL,
-    `fTime` TIME,
-    PRIMARY KEY(`id`)
+    `sTime` TIME DEFAULT '00:00:00',
+    `fTime` TIME DEFAULT '00:00:00',
+    `real_event` INT UNSIGNED,
+    FOREIGN KEY ('real_event') REFERENCES `events`(`id`),
+    PRIMARY KEY (`id`)
 );
