@@ -154,11 +154,9 @@ function a(e) {
   let t = e.target[0].value;
 
   const MIN_DATE_VALUE = "1990-01-01";
-  const MAX_DATE_VALUE = "2300-12-12";
   let sD = e.target[1].value,
     fD = e.target[2].value;
   if (sD < MIN_DATE_VALUE) return;
-
   if (fD < MIN_DATE_VALUE) return;
   if (fD < sD) return;
 

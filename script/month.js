@@ -204,9 +204,6 @@ function fillDays() {
             } while (w.length > MAX_EVENT - 1);
             w.push(other);
           }
-          // else if (w.length <= MAX_EVENT) {
-          //   // Numero entro il limite non serve other-evt
-          // }
           w.forEach((elW) => {
             let yInd = key;
             let thisDay = arr[key];
@@ -252,6 +249,9 @@ function fillDays() {
           });
         },
         complete: () => {
+          // FIXME: funziona solo se il giorno ha ricevuto eventi aggiuntivi dal giorno precedente prima della fine dell'eseguzione della richiesta di questo giorno altrimenti non fa perche per lui gli eventi non sono ancora presenti (async)
+          // FIXME: si rimuove dal basso ma se si lascia eventi vuoti non va bene
+          // FIXME: se l'ultimo è un evento/end-evt con sopra un event-empty appare other-evt lasciando sopra gli empty-evt, ma premendo su altro non risulta presente nessun eventi essendo tutti end-evt
           let nChild = day.childElementCount;
           if (nChild <= 4) return;
 
@@ -276,10 +276,7 @@ function fillDays() {
  * @param {HTMLDivElement | Element | Node | object} day
  */
 // TODO: aggiornamento del 'day' in cui si elimina il giorno ma senza rimuovere dalla pagina 'event-view-container' (con fillDays() si rimuove)
-function refreshDay(day) {
-  console.log(typeof day);
-  console.log(day);
-}
+function refreshDay(day) {}
 
 function pastDay(days) {
   let y = now.getFullYear();
