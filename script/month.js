@@ -194,7 +194,6 @@ function fillDays() {
         },
         success: (r) => {
           if (!r) return;
-          // let w = r.split(/(?=<div)/);
           let w = r.split("---");
           w.pop();
           if (w.length > MAX_EVENT) {
@@ -212,33 +211,39 @@ function fillDays() {
             let yInd = key;
             let thisDay = arr[key];
             let next = arr[++yInd];
-            // FIXME: possibili bug, gli eventi vuoti vengono sovrascritti quando vengono caricati gli eventi del giorni in cui sono presenti?
-            while (elW.includes("end-evt")) {
-              let ind = elW.lastIndexOf("end-evt");
-              while (ind >= 0) {
-                if (elW[ind] == "<") break;
-                --ind;
-              }
-              let diff = thisDay.childElementCount - next.childElementCount;
-              if (
-                thisDay.childElementCount != next.childElementCount &&
-                Math.abs(diff) > 1
-              ) {
-                // FIXME: EVENTI VUOTI DISATTIVATI PER BUG
-                // TODO: DA SOSTITUIRE il metodo di utilizzo degli eventi vuoti per 'abbassare eventi aggiunti a giorni succ.'
-                // for (let i = 1; i < diff; i++)
-                //   next.append($('<div class="event empty"></div>')[0]);
-                let adding = elW.substring(ind, elW.length);
-                next.innerHTML += adding;
-                elW = elW.replace(adding, "");
-              } else {
-                let adding = elW.substring(ind, elW.length);
-                arr[yInd].innerHTML += adding;
-                elW = elW.replace(adding, "");
-              }
-              thisDay = arr[yInd];
-              next = arr[++yInd];
-            }
+            // FIXME: Sostituire SEMPRE gli eventi vuoti se possibile (magari con eventi NFgg o Fgg)
+            // while (elW.includes("end-evt")) {
+            //   let ind = elW.lastIndexOf("end-evt");
+            //   while (ind >= 0) {
+            //     if (elW[ind] == "<") break;
+            //     --ind;
+            //   } // index dell'ultimo end-evt
+
+            //   /* WORK HERE */
+            //   // bug: se ci sono inserimenti dal giorno prima non ha piu il giusto effetto
+            //   // bug: se l'evento lungo è nell'ulitmo slot cioè il 3 evento, ma nella casella succesiva cè other-evt che si fa?, anche con il nuovo design non va bene
+            //   let diff = Math.abs(
+            //     thisDay.childElementCount - next.childElementCount
+            //   );
+            //   if (thisDay.childElementCount != next.childElementCount) {
+            //     // FIXME: EVENTI VUOTI DISATTIVATI PER BUG
+            //     // TODO: DA SOSTITUIRE il metodo di utilizzo degli eventi vuoti per 'abbassare eventi aggiunti a giorni succ.'
+            //     // max eventi vuoti 2
+            //     // if (diff > 2) diff = 1;
+            //     // for (let i = 1; i < diff; i++)
+            //     //   next.append($('<div class="event empty-evt"></div>')[0]);
+            //     let adding = elW.substring(ind, elW.length);
+            //     next.innerHTML += adding;
+            //     elW = elW.replace(adding, "");
+            //   } else {
+            //     let adding = elW.substring(ind, elW.length);
+            //     arr[yInd].innerHTML += adding;
+            //     elW = elW.replace(adding, "");
+            //   }
+            //   thisDay = arr[yInd];
+            //   next = arr[++yInd];
+            //   /* WORK HERE */
+            // }
             let dayArr = Array.from(day.children).find((e) => {
               return e.className == "event";
             });
@@ -247,7 +252,6 @@ function fillDays() {
           });
         },
         complete: () => {
-          // FIXME: funziona solo se il giorno ha ricevuto eventi aggiuntivi dal giorno precedente prima della fine dell'eseguzione della richiesta di questo giorno altrimenti non fa perche per lui gli eventi non sono ancora presenti (async)
           let nChild = day.childElementCount;
           if (nChild <= 4) return;
 
