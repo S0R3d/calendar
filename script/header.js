@@ -174,7 +174,7 @@ function a(e) {
   // invio dati a database
   $.ajax({
     type: "POST",
-    url: "../php/insertData.php",
+    url: "php/insertData.php",
     data: {
       title: t,
       sDate: sD,

@@ -1,6 +1,6 @@
 <header>
     <div class="logo">
-        <?php include("./img/calendar.svg") ?>
+        <?php include("img/calendar.svg") ?>
         <span>Calendar</span>
     </div>
     <div class="btn">

@@ -183,7 +183,7 @@ function fillDays() {
       let y = movingDate.getYear();
       $.ajax({
         method: "POST",
-        url: "../php/loadData.php",
+        url: "php/loadData.php",
         data: {
           year: y,
           month: m,
@@ -307,7 +307,7 @@ $(document).ready(function () {
       let top = offset.top >= 50 ? Math.round(offset.top) - 50 : 0;
       let left = offset.left >= 25 ? Math.round(offset.left) - 25 : 0;
 
-      const srcX = '<img src="../img/x.svg">';
+      const srcX = '<img src="img/x.svg">';
 
       const $container = $('<div class="event-view-container"></div>');
       $container.css({
@@ -315,7 +315,7 @@ $(document).ready(function () {
         left: left,
       });
       $container.html(
-        '<div class="event-view"><div class="close-view-btn"><img src="../img/x.svg"></div></div>'
+        '<div class="event-view"><div class="close-view-btn"><img src="img/x.svg"></div></div>'
       );
       $container.appendTo(e.target.parentElement);
 
@@ -338,7 +338,7 @@ $(document).ready(function () {
       $.when(
         $.ajax({
           method: "POST",
-          url: "../php/loadData.php",
+          url: "php/loadData.php",
           data: {
             year: y,
             month: m,
@@ -379,7 +379,7 @@ $(document).ready(function () {
           let id = +t.parentElement.attributes["event-id"].value;
           $.ajax({
             method: "POST",
-            url: "../php/removeData.php",
+            url: "php/removeData.php",
             data: {
               y: y,
               m: m,
