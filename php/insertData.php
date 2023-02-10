@@ -1,6 +1,7 @@
 <?php
 require_once("conn.php");
 require_once("table.php");
+global $db;
 // non fidarsi dei dati passati attraverso $_POST
 
 $query_last_id = "SELECT MAX(`id`) as max FROM `event`";

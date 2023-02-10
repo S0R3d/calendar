@@ -1,5 +1,6 @@
 <?php
 require_once("conn.php");
+global $db;
 $date = $_POST['y']."-".$_POST['m']."-".$_POST['d'];
 $id = $_POST['id'];
 $query = "DELETE FROM `event` WHERE `real_evt_id` = :id;

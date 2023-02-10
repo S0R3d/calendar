@@ -1,6 +1,6 @@
 <?php
 require_once 'conn.php';
-$table = 'events';
+global $db;
 try {
     $db->exec("CREATE TABLE IF NOT EXISTS `event` (
       `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
