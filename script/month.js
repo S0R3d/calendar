@@ -345,7 +345,7 @@ $(document).ready(function () {
             day: d,
             limit: 100,
           },
-          success: function (r) {
+          success: (r) => {
             if (!r) return;
             let a = r.split("---");
             a.forEach((el) => {
@@ -386,7 +386,7 @@ $(document).ready(function () {
               d: d,
               id: id,
             },
-            success: function (r) {},
+            success: (r) => {},
           });
           // remove all event with specific 'event-id' from doc
           $("div.event")
