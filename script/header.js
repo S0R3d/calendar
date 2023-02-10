@@ -28,6 +28,10 @@ function clearInput() {
   fDate.value = "";
   sTime.value = "";
   fTime.value = "";
+  fullDayBtn.checked = false;
+  // fullDayBtn.value = "off";
+  // document.querySelector("div.sTime").classList.toggle("hide");
+  // document.querySelector("div.fTime").classList.toggle("hide");
 }
 
 if (!nextBtn) console.error("Not Found Button 'Next Month'!");
@@ -85,7 +89,7 @@ if (!fullDayBtn) console.error("Not Found Checkbox 'Full Day'");
 fullDayBtn.addEventListener("change", () => {
   document.querySelector("div.sTime").classList.toggle("hide");
   document.querySelector("div.fTime").classList.toggle("hide");
-
+  // FIXME: bug quando faccio submit il check è non spuntato ma non appare l'orario, quando lo premo (segnando full day) appare l'orario
   if (fullDayBtn.checked) {
     sTime.required = false;
     fTime.required = false;
@@ -101,7 +105,7 @@ fullDayBtn.addEventListener("change", () => {
   }
 });
 
-window.onclick = function (event) {
+window.onclick = (event) => {
   if (
     !(
       event.target.matches(".btn-add-event") ||
@@ -171,6 +175,7 @@ function a(e) {
     if (sD == fD && sT > fT) return;
   }
 
+  console.log([t, sD, fD, sT, fT]);
   // invio dati a database
   $.ajax({
     type: "POST",
@@ -182,8 +187,13 @@ function a(e) {
       sTime: sT,
       fTime: fT,
     },
-    success: function (r) {
+    success: (r) => {
       fillDays();
+    },
+    complete: () => {
+      document.querySelector("div.dropdown-content").classList.remove("show");
+      clearInput();
+      // chiudi tenda
     },
   });
 }
