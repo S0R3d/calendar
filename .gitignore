@@ -3,3 +3,5 @@
 img/*
 !img/*.svg
 backup/*
+*.phar
+*.json
