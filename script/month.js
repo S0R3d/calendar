@@ -349,15 +349,16 @@ $(document).ready(function () {
             if (!r) return;
             let a = r.split("---");
             a.forEach((el) => {
-              if (el.includes("end-evt")) {
-                let indEndEvt = el.indexOf("end-evt");
-                while (indEndEvt >= 0) {
-                  if (el[indEndEvt] == "<") break;
-                  --indEndEvt;
-                }
-                let sub = el.substring(indEndEvt, el.length);
-                el = el.replace(sub, "");
-              }
+              // FIXME: si possono rimuovere anch gli end-evt senza rimuovere tutto il real_evt
+              // if (el.includes("end-evt")) {
+              //   let indEndEvt = el.indexOf("end-evt");
+              //   while (indEndEvt >= 0) {
+              //     if (el[indEndEvt] == "<") break;
+              //     --indEndEvt;
+              //   }
+              //   let sub = el.substring(indEndEvt, el.length);
+              //   el = el.replace(sub, "");
+              // }
               let removeBtn = `</div><div class="remove-evt">${srcX}</div>`;
               let lastCloseDiv = el.lastIndexOf("</div>");
               if (lastCloseDiv !== -1) {
@@ -388,15 +389,17 @@ $(document).ready(function () {
             },
             success: (r) => {},
           });
-          // remove all event with specific 'event-id' from doc
+          // rimuove gli evt con 'event-id' specifico dall'intera pagina
           $("div.event")
             .filter((i, el) => {
               return $(el).attr("event-id") == id;
             })
             .remove();
-          // remove only event in 'event-view-container'
+          // TODO: rimuovere l'evt solo da 'event-view-container'
           // $(t.parentElement).remove();
-          // RUN fillDays() per l'aggiornamento del calendario
+          // RUN fillDays() per l'aggiornamento del calendario, alla chiusura di 'event-view-container'
+
+          // TODO: scrivere refreshDay()
           refreshDay(e.target.parentElement, $container[0]);
         });
       });
@@ -405,6 +408,7 @@ $(document).ready(function () {
 
       $("div.close-view-btn").on("click", (e) => {
         $container.remove();
+        // RUN fillDays() per l'aggiornamento del calendario, alla chiusura di 'event-view-container'
       });
     }
   });
