@@ -22,14 +22,6 @@ const fTime = document.querySelector("div.fTime>input");
 
 // const submit = document.querySelector("input[type='submit']");
 
-function clearInput() {
-  title.value = "";
-  sDate.value = "";
-  fDate.value = "";
-  sTime.value = "";
-  fTime.value = "";
-}
-
 function resetInput() {
   title.value = "";
   sDate.value = "";
@@ -37,8 +29,8 @@ function resetInput() {
   sTime.value = "";
   fTime.value = "";
   fullDayBtn.checked = false;
-  document.querySelector("div.fTime").classList.toggle("hide");
-  document.querySelector("div.sTime").classList.toggle("hide");
+  document.querySelector("div.fTime").classList.remove("hide");
+  document.querySelector("div.sTime").classList.remove("hide");
   sTime.required = true;
   fTime.required = true;
   sTime.setCustomValidity("Inserire un tempo di inizio valido");
@@ -87,7 +79,6 @@ todayBtn.addEventListener("click", () => {
 if (!addEventBtn) console.error("Not Found Button 'Add Event'");
 addEventBtn.addEventListener("click", () => {
   document.querySelector("div.dropdown-content").classList.toggle("show");
-  clearInput();
 });
 
 window.onclick = (event) => {
@@ -102,7 +93,7 @@ window.onclick = (event) => {
     let openDD = document.querySelector("div.dropdown-content");
     if (openDD.classList.contains("show")) {
       openDD.classList.remove("show");
-      clearInput();
+      resetInput();
     }
   }
 };
@@ -185,7 +176,6 @@ function a(e) {
     if (sD == fD && sT > fT) return;
   }
 
-  console.log([t, sD, fD, sT, fT]);
   // invio dati a database
   $.ajax({
     type: "POST",
