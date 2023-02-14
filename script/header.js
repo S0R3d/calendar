@@ -28,10 +28,21 @@ function clearInput() {
   fDate.value = "";
   sTime.value = "";
   fTime.value = "";
+}
+
+function resetInput() {
+  title.value = "";
+  sDate.value = "";
+  fDate.value = "";
+  sTime.value = "";
+  fTime.value = "";
   fullDayBtn.checked = false;
-  // fullDayBtn.value = "off";
-  // document.querySelector("div.sTime").classList.toggle("hide");
-  // document.querySelector("div.fTime").classList.toggle("hide");
+  document.querySelector("div.fTime").classList.toggle("hide");
+  document.querySelector("div.sTime").classList.toggle("hide");
+  sTime.required = true;
+  fTime.required = true;
+  sTime.setCustomValidity("Inserire un tempo di inizio valido");
+  fTime.setCustomValidity("Inserire un tempo di fine valido");
 }
 
 if (!nextBtn) console.error("Not Found Button 'Next Month'!");
@@ -79,32 +90,6 @@ addEventBtn.addEventListener("click", () => {
   clearInput();
 });
 
-title.setCustomValidity("Inserire un titolo per l'evento");
-sDate.setCustomValidity("Inserire una data di inizio valida");
-fDate.setCustomValidity("Inserire una data di fine valida");
-sTime.setCustomValidity("Inserire un tempo di inizio valido");
-fTime.setCustomValidity("Inserire un tempo di fine valido");
-
-if (!fullDayBtn) console.error("Not Found Checkbox 'Full Day'");
-fullDayBtn.addEventListener("change", () => {
-  document.querySelector("div.sTime").classList.toggle("hide");
-  document.querySelector("div.fTime").classList.toggle("hide");
-  // FIXME: bug quando faccio submit il check è non spuntato ma non appare l'orario, quando lo premo (segnando full day) appare l'orario
-  if (fullDayBtn.checked) {
-    sTime.required = false;
-    fTime.required = false;
-    sTime.value = "";
-    fTime.value = "";
-    sTime.setCustomValidity("");
-    fTime.setCustomValidity("");
-  } else {
-    sTime.required = true;
-    fTime.required = true;
-    sTime.setCustomValidity("Inserire un tempo di inizio valido");
-    fTime.setCustomValidity("Inserire un tempo di fine valido");
-  }
-});
-
 window.onclick = (event) => {
   if (
     !(
@@ -121,6 +106,31 @@ window.onclick = (event) => {
     }
   }
 };
+
+title.setCustomValidity("Inserire un titolo per l'evento");
+sDate.setCustomValidity("Inserire una data di inizio valida");
+fDate.setCustomValidity("Inserire una data di fine valida");
+sTime.setCustomValidity("Inserire un tempo di inizio valido");
+fTime.setCustomValidity("Inserire un tempo di fine valido");
+
+if (!fullDayBtn) console.error("Not Found Checkbox 'Full Day'");
+fullDayBtn.addEventListener("change", () => {
+  document.querySelector("div.sTime").classList.toggle("hide");
+  document.querySelector("div.fTime").classList.toggle("hide");
+  if (fullDayBtn.checked) {
+    sTime.required = false;
+    fTime.required = false;
+    sTime.value = "";
+    fTime.value = "";
+    sTime.setCustomValidity("");
+    fTime.setCustomValidity("");
+  } else {
+    sTime.required = true;
+    fTime.required = true;
+    sTime.setCustomValidity("Inserire un tempo di inizio valido");
+    fTime.setCustomValidity("Inserire un tempo di fine valido");
+  }
+});
 
 title.addEventListener("input", () => {
   if (title.validity.typeMismatch) {
@@ -192,8 +202,7 @@ function a(e) {
     },
     complete: () => {
       document.querySelector("div.dropdown-content").classList.remove("show");
-      clearInput();
-      // chiudi tenda
+      resetInput();
     },
   });
 }
