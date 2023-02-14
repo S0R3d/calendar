@@ -11,6 +11,7 @@ try {
       `fTime` time DEFAULT '00:00:00',
       `real_evt_id` int(10) UNSIGNED DEFAULT NULL,
       `real_sDate` date DEFAULT NULL,
+      `real_fDate` date DEFAULT NULL,
       PRIMARY KEY (`id`),
       UNIQUE KEY `id` (`id`),
       FOREIGN KEY (`real_evt_id`) REFERENCES `event`(`real_evt_id`)

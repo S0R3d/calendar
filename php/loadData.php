@@ -5,7 +5,7 @@ $RESULT = '';
 $date = $_POST['year']."-".$_POST['month']."-".$_POST['day'];
 $limit = (int) $_POST['limit'];
 
-$query1 = "SELECT count(`id`) FROM `event` WHERE `sDate` = :date";
+$query1 = "SELECT count(`id`) FROM `event` WHERE `sDate` = :date;";
 $state1 = $db->prepare($query1);
 $state1->execute(['date' => $date]);
 $res = $state1->fetch();
@@ -15,15 +15,12 @@ if ($count > $limit) {
     --$limit;
 }
 
-// $query = "SELECT * FROM `events` WHERE `sDate` = :date ORDER BY `fDate` DESC LIMIT :limit";
-// $query = "SELECT * FROM `events` WHERE `sDate` = :date ORDER BY `fDate` DESC";
-// SELECT * FROM `event`WHERE `event`.`real_evt_id` IS NULL and `event`.`id`= ( SELECT evt.real_evt_id FROM `event` as evt WHERE evt.sDate = "2023-02-09" and evt.fDate = "2023-02-09" and evt.real_evt_id is not null and evt.id = 8 );
-// $query = "SELECT * FROM `event` WHERE `event`.`sDate` = :date ORDER BY CASE WHEN `event`.`real_evt_id` IS NULL THEN 1 ELSE 0 END, `event`.`real_evt_id`, `event`.`fDate` DESC";
 $query = "SELECT *
 FROM `event`
 WHERE `event`.`sDate` = :date
 ORDER BY
-CASE WHEN `event`.`real_sDate` IS NULL THEN 1 ELSE 0 END, `event`.`real_sDate`, `event`.`fDate` DESC";
+CASE WHEN `event`.`real_sDate` IS NULL THEN 1 ELSE 0 END, `event`.`real_sDate`, `event`.`fDate` DESC, `event`.`real_fDate`DESC;";
+// aggiunto real_fDate
 $state = $db->prepare($query);
 $state->bindParam('date', $date, PDO::PARAM_STR);
 // $state->bindParam('limit', $limit, PDO::PARAM_INT);
@@ -61,7 +58,7 @@ if (sizeof($rtrn)) {
             }
         } else { // END EVENT
             // ricerca del real event associato all' end event 
-            $q = "SELECT * FROM `event` WHERE `event`.`real_evt_id` IS NULL and `event`.`id`= ".$event['real_evt_id']."";
+            $q = "SELECT * FROM `event` WHERE `event`.`real_evt_id` IS NULL and `event`.`id`= ".$event['real_evt_id'].";";
             $s = $db->prepare($q);
             $s->execute();
             $real = $s->fetchAll();
@@ -75,9 +72,9 @@ if (sizeof($rtrn)) {
                 if ($event['fDate'] == $real_fD) $last = 'last-evt';
                 else $last = '';
                 if ($real_sD != $real_fD and ($real_sT == $real_fT and $real_fT == "00:00")) { // Fggs
-                    $RESULT .= '<div class="event Fggs end-evt '.$last.'" event_id="'.$event['id'].'" real_evt_id="'.$event['real_evt_id'].'"><div class="title">'.$real[0]["title"].'</div></div>';
+                    $RESULT .= '<div class="event Fggs end-evt '.$last.'" event_id="'.$event['id'].'" real_evt_id="'.$event['real_evt_id'].'" style="order: '.($i+1).';"><div class="title">'.$real[0]["title"].'</div></div>';
                 } else if ($real_sD != $real_fD and $real_sT != $real_fT) { //NFggs
-                    $RESULT .= '<div class="event NFggs end-evt '.$last.'" event_id="'.$event['id'].'" real_evt_id="'.$event['real_evt_id'].'"><div class="title">'.$real[0]["title"].'</div></div>';
+                    $RESULT .= '<div class="event NFggs end-evt '.$last.'" event_id="'.$event['id'].'" real_evt_id="'.$event['real_evt_id'].'" style="order: '.($i+1).';"><div class="title">'.$real[0]["title"].'</div></div>';
                 }
             }
         }
