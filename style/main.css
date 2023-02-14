@@ -381,6 +381,8 @@ input:focus:invalid {
 
     border-radius: 8px;
     padding: 10px 10px;
+
+    font-size: 15px;
 }
 
 .close-view-btn {
