@@ -12,7 +12,9 @@ CREATE TABLE IF NOT EXISTS `event`(
     `fDate` DATE NOT NULL,
     `sTime` TIME DEFAULT '00:00:00',
     `fTime` TIME DEFAULT '00:00:00',
-    `real_evt_id` INT UNSIGNED,
+    `real_evt_id` INT UNSIGNED DEFAULT NULL,
+    `real_sDate` DATE DEFAULT NULL,
+    `real_fDate` DATE DEFAULT NULL,
     FOREIGN KEY ('real_evt_id') REFERENCES `event`(`id`),
     PRIMARY KEY (`id`)
 );
