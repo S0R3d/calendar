@@ -34,6 +34,12 @@ if ($r[0]['sDate'] == $date and $r[0]['fDate'] == $date and $r[0]['real_evt_id']
                 'new_date' => $r[0]['real_sDate'],
                 'r_id' => $r[0]['real_evt_id'],
             ]);
+            $q2 = "UPDATE `event` SET `real_fDate` = :new_date WHERE `event`.`real_evt_id` = :r_id and `event`.`real_fDate` IS NOT NULL;";
+            $s2 = $db->prepare($q2);
+            $s2->execute([
+               'new_date' => $r[0]['sDate'],
+               'r_id' => $r[0]['real_evt_id'],
+            ]);
         } else {
             $q1 = "UPDATE `event` SET `sDate` = :new_date WHERE `event`.`id` = :r_id;";
             $s1 = $db->prepare($q1);
@@ -44,8 +50,8 @@ if ($r[0]['sDate'] == $date and $r[0]['fDate'] == $date and $r[0]['real_evt_id']
             $q2 = "UPDATE `event` SET `real_sDate` = :new_date WHERE `event`.`real_evt_id` = :r_id and `event`.`real_sDate` IS NOT NULL;";
             $s2 = $db->prepare($q2);
             $s2->execute([
-                'new_date' => $r[0]['sDate'],
-                'r_id' => $r[0]['real_evt_id'],
+               'new_date' => $r[0]['sDate'],
+               'r_id' => $r[0]['real_evt_id'],
             ]);
         }
     } else if ($diff >= 2) {
