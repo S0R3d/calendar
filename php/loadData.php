@@ -72,9 +72,9 @@ if (sizeof($rtrn)) {
                 if ($event['fDate'] == $real_fD) $last = 'last-evt';
                 else $last = '';
                 if ($real_sD != $real_fD and ($real_sT == $real_fT and $real_fT == "00:00")) { // Fggs
-                    $RESULT .= '<div class="event Fggs end-evt '.$last.'" event_id="'.$event['id'].'" real_evt_id="'.$event['real_evt_id'].'" style="order: '.($i+1).';"><div class="title">'.$real[0]["title"].'</div></div>';
+                    $RESULT .= '<div class="event Fggs end-evt '.$last.'" event-id="'.$event['id'].'" real-evt-id="'.$event['real_evt_id'].'" style="order: '.($i+1).';"><div class="title">'.$real[0]["title"].'</div></div>';
                 } else if ($real_sD != $real_fD and $real_sT != $real_fT) { //NFggs
-                    $RESULT .= '<div class="event NFggs end-evt '.$last.'" event_id="'.$event['id'].'" real_evt_id="'.$event['real_evt_id'].'" style="order: '.($i+1).';"><div class="title">'.$real[0]["title"].'</div></div>';
+                    $RESULT .= '<div class="event NFggs end-evt '.$last.'" event-id="'.$event['id'].'" real-evt-id="'.$event['real_evt_id'].'" style="order: '.($i+1).';"><div class="title">'.$real[0]["title"].'</div></div>';
                 }
             }
         }
