@@ -183,13 +183,11 @@ function fillDays() {
       let y = movingDate.getYear();
       $.ajax({
         method: "POST",
-        url: "php/loadData.php",
+        url: "../calendar/php/loadData.php",
         data: {
           year: y,
           month: m,
           day: d,
-          // FIXME: change limit in base alla disponibilità del day
-          // limit: 3 - (day.childElementCount - 1),
           limit: 3,
         },
         success: (r) => {
@@ -205,9 +203,9 @@ function fillDays() {
             w.push(other);
           }
           w.forEach((elW) => {
-            let yInd = key;
-            let thisDay = arr[key];
-            let next = arr[++yInd];
+            // let yInd = key;
+            // let thisDay = arr[key];
+            // let next = arr[++yInd];
             // FIXME: Sostituire SEMPRE gli eventi vuoti se possibile (magari con eventi NFgg o Fgg)
             // while (elW.includes("end-evt")) {
             //   let ind = elW.lastIndexOf("end-evt");
@@ -241,9 +239,9 @@ function fillDays() {
             //   next = arr[++yInd];
             //   /* WORK HERE */
             // }
-            let dayArr = Array.from(day.children).find((e) => {
-              return e.className == "event";
-            });
+            let dayArr = Array.from(day.children).find(
+              (e) => e.className == "event"
+            );
             if (dayArr) dayArr.outerHTML = elW;
             else day.innerHTML += elW;
           });
@@ -271,13 +269,6 @@ function fillDays() {
   resetMovingDate();
 }
 
-/**
- * Upgrade events in a specific day, with
- * @param {HTMLDivElement | Element | Node | object} day
- */
-// TODO: aggiornamento del 'day' in cui si elimina il giorno ma senza rimuovere dalla pagina 'event-view-container' (con fillDays() si rimuove)
-function refreshDay(day) {}
-
 function pastDay(days) {
   let y = now.getFullYear();
   let yCurr = pageCurrentDate[0];
@@ -296,6 +287,66 @@ function pastDay(days) {
   });
 }
 
+/**
+ * Upgrade events in a specific day
+ * @param {HTMLDivElement | Element | Node | object} day
+ * @param {HTMLElement | Element | Node | object} $lock
+ */
+function refreshDay(day, $lock) {
+  // FIXME: rimuove l event-view container
+  removeTrash(day);
+  let y = pageCurrentDate[0];
+  let m = pageCurrentDate[1];
+  let d = +day.children[0].children[1].innerHTML;
+
+  $.ajax({
+    method: "POST",
+    url: "../calendar/php/loadData.php",
+    data: {
+      year: y,
+      month: m,
+      day: d,
+      limit: 3,
+    },
+    success: (r) => {
+      // copy from fillDays()
+      if (!r) return;
+      let w = r.split("---");
+      w.pop();
+      if (w.length > MAX_EVENT) {
+        const r = w.length - (MAX_EVENT - 1);
+        let other = '<div class="other-evt">Altri ' + r + "</div>";
+        do {
+          w.pop();
+        } while (w.length > MAX_EVENT - 1);
+        w.push(other);
+      }
+      w.forEach((elW) => {
+        let dayArr = Array.from(day.children).find(
+          (e) => e.className == "event"
+        );
+        if (dayArr) dayArr.outerHTML = elW;
+        else day.innerHTML += elW;
+      });
+    },
+    complete: () => {
+      // copy from fillDays()
+      let nChild = day.childElementCount;
+      if (nChild <= 4) return;
+
+      let dif = nChild - MAX_CHILD_IN_DAY;
+      let oe = '<div class="other-evt">Altri ' + dif + "</div>";
+      while (day.childElementCount > MAX_CHILD_IN_DAY - 1) {
+        day.removeChild(day.children[day.childElementCount - 1]);
+      }
+      day.append($(oe)[0]);
+    },
+  });
+
+  // TODO: fissare il container ma facendolo funzionare
+  // day.append($lock[0]);
+}
+
 $(document).ready(function () {
   fillDays();
   $(document).on("click", (e) => {
@@ -307,7 +358,7 @@ $(document).ready(function () {
       let top = offset.top >= 50 ? Math.round(offset.top) - 50 : 0;
       let left = offset.left >= 25 ? Math.round(offset.left) - 25 : 0;
 
-      const srcX = '<img src="img/x.svg">';
+      const srcX = '<img src="../calendar/img/x.svg">';
 
       const $container = $('<div class="event-view-container"></div>');
       $container.css({
@@ -315,7 +366,7 @@ $(document).ready(function () {
         left: left,
       });
       $container.html(
-        '<div class="event-view"><div class="close-view-btn"><img src="img/x.svg"></div></div>'
+        '<div class="event-view"><div class="close-view-btn"><img src="../calendar/img/x.svg"></div></div>'
       );
       $container.appendTo(e.target.parentElement);
 
@@ -328,7 +379,6 @@ $(document).ready(function () {
 
       let y = pageCurrentDate[0];
       let m = pageCurrentDate[1];
-      // FIXME:  throw an error with new design idea
       let d = +e.target.parentElement.children[0].children[1].innerHTML;
 
       $date[0].children[0].innerHTML =
@@ -338,7 +388,7 @@ $(document).ready(function () {
       $.when(
         $.ajax({
           method: "POST",
-          url: "php/loadData.php",
+          url: "../calendar/php/loadData.php",
           data: {
             year: y,
             month: m,
@@ -349,7 +399,7 @@ $(document).ready(function () {
             if (!r) return;
             let a = r.split("---");
             a.forEach((el) => {
-              // FIXME: si possono rimuovere anch gli end-evt senza rimuovere tutto il real_evt
+              // rimuove gli end-evt dal pool ricevuto
               // if (el.includes("end-evt")) {
               //   let indEndEvt = el.indexOf("end-evt");
               //   while (indEndEvt >= 0) {
@@ -363,7 +413,6 @@ $(document).ready(function () {
               let lastCloseDiv = el.lastIndexOf("</div>");
               if (lastCloseDiv !== -1) {
                 let sub = el.substring(lastCloseDiv, el.length);
-                // el = el.replace(/_([^_]*)$/, removeBtn + "$1");
                 el = el.replace(sub, removeBtn);
                 $viewer.append(el);
               }
@@ -380,7 +429,7 @@ $(document).ready(function () {
           let id = +t.parentElement.attributes["event-id"].value;
           $.ajax({
             method: "POST",
-            url: "php/removeData.php",
+            url: "../calendar/php/removeData.php",
             data: {
               y: y,
               m: m,
@@ -395,12 +444,13 @@ $(document).ready(function () {
               return $(el).attr("event-id") == id;
             })
             .remove();
-          // TODO: rimuovere l'evt solo da 'event-view-container'
+          // rimuovere l'evt solo da 'event-view-container'
           // $(t.parentElement).remove();
-          // RUN fillDays() per l'aggiornamento del calendario, alla chiusura di 'event-view-container'
-
-          // TODO: scrivere refreshDay()
-          refreshDay(e.target.parentElement, $container[0]);
+          let day =
+            e.target.parentElement ||
+            ee.currentTarget.parentElement.parentElement.parentElement
+              .parentElement;
+          refreshDay(day, $container);
         });
       });
 
@@ -408,7 +458,6 @@ $(document).ready(function () {
 
       $("div.close-view-btn").on("click", (e) => {
         $container.remove();
-        // RUN fillDays() per l'aggiornamento del calendario, alla chiusura di 'event-view-container'
       });
     }
   });
