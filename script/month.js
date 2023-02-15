@@ -445,11 +445,15 @@ $(document).ready(function () {
             .remove();
           // rimuovere l'evt solo da 'event-view-container'
           // $(t.parentElement).remove();
-          let day =
-            e.target.parentElement ||
-            ee.currentTarget.parentElement.parentElement.parentElement
-              .parentElement;
-          refreshDay(day);
+          let dd;
+          document
+            .querySelectorAll(`div.day.${monthShort[m - 1]}`)
+            .forEach((day, key, arr) => {
+              if (day.children[0].children[1].innerHTML == d) {
+                dd = day;
+              }
+            });
+          refreshDay(dd);
         });
       });
 
