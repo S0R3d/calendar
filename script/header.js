@@ -84,6 +84,7 @@ addEventBtn.addEventListener("click", () => {
 window.onclick = (event) => {
   if (
     !(
+      event.target.matches(".dropdown-content") ||
       event.target.matches(".btn-add-event") ||
       event.target.matches("form, form>*") ||
       event.target.matches("label") ||
