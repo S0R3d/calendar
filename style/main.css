@@ -251,14 +251,14 @@ input:focus:invalid {
     width: 100%;
     height: 20px;
     align-items: center;
+    justify-content: center;
     overflow: hidden;
 }
 
 .event>.icon {
-    margin-right: 6px;
     border-radius: 50%;
-    width: 9px;
-    height: 9px;
+    width: 10px;
+    height: 10px;
     background-color: green;
     display: inline-block;
 }
@@ -272,6 +272,7 @@ input:focus:invalid {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
+    padding-top: 1px;
 }
 
 .event.Fgg {
@@ -279,7 +280,6 @@ input:focus:invalid {
     border-radius: 8px;
     background-color: var(--bg-event);
     color: #fff;
-    padding: 1px;
 }
 
 .transparency>.event.Fgg {
@@ -316,8 +316,13 @@ input:focus:invalid {
 
 
 .event.NFgg {
-    padding: 3px 2px;
-    padding-right: 4px;
+    border: 2px solid var(--bg-event);
+    border-radius: 8px;
+    color: #000;
+}
+
+.event.NFgg>.title {
+    width: 94%;
 }
 
 .event.NFggs {
@@ -368,7 +373,11 @@ input:focus:invalid {
 }
 
 .event-view-container .event>.title {
-    width: 95%;
+    width: 93%;
+}
+
+.event-view-container .event.NFgg>.title {
+    width: 88%;
 }
 
 .event-view {
