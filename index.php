@@ -32,7 +32,7 @@ $months = array(
         <?php include('../calendar/php/header.php'); ?>
 
         <div class="calendar month">
-            <!-- IMPORTANTE IN QUESTA SEZIONE SI EGEUONO SCRIPT JS  -->
+            <!-- IMPORTANTE IN QUESTA SEZIONE SI ESEGUONO SCRIPT JS  -->
             <?php
             for ($i = 1; $i < 42 + 1; $i++) {
                 include('../calendar/php/day.php');

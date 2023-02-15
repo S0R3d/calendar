@@ -292,8 +292,7 @@ function pastDay(days) {
  * @param {HTMLDivElement | Element | Node | object} day
  * @param {HTMLElement | Element | Node | object} $lock
  */
-function refreshDay(day, $lock) {
-  // FIXME: rimuove l event-view container
+function refreshDay(day) {
   removeTrash(day);
   let y = pageCurrentDate[0];
   let m = pageCurrentDate[1];
@@ -342,9 +341,6 @@ function refreshDay(day, $lock) {
       day.append($(oe)[0]);
     },
   });
-
-  // TODO: fissare il container ma facendolo funzionare
-  // day.append($lock[0]);
 }
 
 $(document).ready(function () {
@@ -361,6 +357,7 @@ $(document).ready(function () {
       const srcX = '<img src="../calendar/img/x.svg">';
 
       const $container = $('<div class="event-view-container"></div>');
+      // TODO: le posizioni solo statiche, non reagiscono in base alla dimensione della pagina
       $container.css({
         top: top,
         left: left,
@@ -368,7 +365,10 @@ $(document).ready(function () {
       $container.html(
         '<div class="event-view"><div class="close-view-btn"><img src="../calendar/img/x.svg"></div></div>'
       );
-      $container.appendTo(e.target.parentElement);
+      let text_el = new Text("\n        ");
+      $container.insertAfter("div.calendar");
+      $("div.calendar")[0].after(text_el);
+      // $container.appendTo(e.target.parentElement);
 
       const $viewer = $(".event-view");
 
@@ -450,7 +450,7 @@ $(document).ready(function () {
             e.target.parentElement ||
             ee.currentTarget.parentElement.parentElement.parentElement
               .parentElement;
-          refreshDay(day, $container);
+          refreshDay(day);
         });
       });
 
