@@ -39,9 +39,9 @@ if (sizeof($rtrn)) {
             } else if ($sD != $fD and ($sT == $fT and $fT == "00:00")) { // Fggs                
                 $RESULT .= '<div class="event Fggs" event-id="'.$event["id"].'" style="order: '.($i+1).';"><div class="title">'.$event["title"].'</div></div>';
             } else if ($sD == $fD and $sT != $fT) { // NFgg
-                $RESULT .= '<div class="event NFgg" event-id="'.$event["id"].'"><div class="icon"></div><div class="title">'.$sT.' '.$event["title"].'</div></div>';
+                $RESULT .= '<div class="event NFgg" event-id="'.$event["id"].'" style="order: '.($i+1).';"><div class="icon"></div><div class="title">'.$sT.' '.$event["title"].'</div></div>';
             } else if ($sD != $fD and $sT != $fT) { // NFggs 
-                $RESULT .= '<div class="event NFggs" event-id="'.$event["id"].'"><div class="title">'.$sT.' '.$event["title"].'</div></div>';
+                $RESULT .= '<div class="event NFggs" event-id="'.$event["id"].'" style="order: '.($i+1).';"><div class="title">'.$sT.' '.$event["title"].'</div></div>';
             }
         } else { // END EVENT
             $q = "SELECT * FROM `event` WHERE `event`.`real_evt_id` IS NULL and `event`.`id`= ".$event['real_evt_id'].";";
