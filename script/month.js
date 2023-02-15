@@ -362,7 +362,7 @@ $(document).ready(function () {
         left: left,
       });
       $container.html(
-        '<div class="event-view"><div class="close-view-btn"><img src="../calendar/img/x.svg"></div></div>'
+        `<div class="event-view"><div class="close-view-btn">${srcX}</div></div>`
       );
       let text_el = new Text("\n        ");
       $container.insertAfter("div.calendar");
@@ -408,11 +408,9 @@ $(document).ready(function () {
               //   let sub = el.substring(indEndEvt, el.length);
               //   el = el.replace(sub, "");
               // }
-              let removeBtn = `</div><div class="remove-evt">${srcX}</div>`;
-              let lastCloseDiv = el.lastIndexOf("</div>");
-              if (lastCloseDiv !== -1) {
-                let sub = el.substring(lastCloseDiv, el.length);
-                el = el.replace(sub, removeBtn);
+              let removeBtn = `<div class="remove-evt">${srcX}</div></div>`;
+              if (el) {
+                el = el.replace(/<\/div>$/, removeBtn);
                 $viewer.append(el);
               }
             });
