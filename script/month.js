@@ -119,7 +119,6 @@ function formatDays() {
     if (inner == "") day.firstElementChild.children[0].innerHTML = dayName;
   });
 
-  // FIXME: con una copia in questo modo alla modifica di 'first' di modifica anche 'movingDate'
   const first = movingDate;
   let isCurrentMonth = true;
   let thisDay = new Date(first.arr);
@@ -175,7 +174,7 @@ function removeTrash(day) {
 
 function fillDays() {
   const days = document.querySelectorAll("div.day");
-  days.forEach((day, key, arr) => {
+  days.forEach((day) => {
     removeTrash(day);
     if (day.classList.contains(monthShort[pageCurrentDate[1] - 1])) {
       let d = movingDate.getDay();

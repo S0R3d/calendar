@@ -1,7 +1,6 @@
 <?php
 require_once("conn.php");
 global $db;
-// non fidarsi dei dati passati attraverso $_POST
 
 $query_last_id = "SELECT MAX(`id`) as max FROM `event`;";
 $s = $db->prepare($query_last_id);
@@ -71,6 +70,3 @@ for ($i = 1, $one = $sD; $fD->diff($one)->d > 0; ++$i) {
         'r_fdate_e' => $end['real_fDate'],
     ]);
 }
-
-
-

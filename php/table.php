@@ -20,4 +20,3 @@ try {
     echo 'Error massage: '.$th;
     die();
 }
-?>

@@ -176,7 +176,6 @@ function a(e) {
     if (sD == fD && sT > fT) return;
   }
 
-  // invio dati a database
   $.ajax({
     type: "POST",
     url: "../calendar/php/insertData.php",

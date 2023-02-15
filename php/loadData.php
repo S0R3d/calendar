@@ -20,7 +20,6 @@ FROM `event`
 WHERE `event`.`sDate` = :date
 ORDER BY
 CASE WHEN `event`.`real_sDate` IS NULL THEN 1 ELSE 0 END, `event`.`real_sDate`, `event`.`fDate` DESC, `event`.`real_fDate`DESC;";
-// aggiunto real_fDate
 $state = $db->prepare($query);
 $state->bindParam('date', $date, PDO::PARAM_STR);
 // $state->bindParam('limit', $limit, PDO::PARAM_INT);
@@ -37,27 +36,14 @@ if (sizeof($rtrn)) {
         if (!$real_id) { // REAL EVENT
             if ($sD == $fD and ($sT == $fT and $fT == "00:00")) { // Fgg
                 $RESULT .= '<div class="event Fgg" event-id="'.$event["id"].'" style="order: '.($i+1).';"><div class="title">'.$event["title"].'</div></div>';
-            } else if ($sD != $fD and ($sT == $fT and $fT == "00:00")) { // Fggs
-                // $target = strtotime($fD);
-                // $current = strtotime($sD);
-                // $diff = ((abs($target-$current)/60)/60)/24;
+            } else if ($sD != $fD and ($sT == $fT and $fT == "00:00")) { // Fggs                
                 $RESULT .= '<div class="event Fggs" event-id="'.$event["id"].'" style="order: '.($i+1).';"><div class="title">'.$event["title"].'</div></div>';
-                // for ($i = 0; $i < $diff; $i++) {
-                //     $last = $i==0 ? 'last-evt' : '';
-                //     $RESULT .= '<div class="event Fggs end-evt '.$last.'"><div class="title">'.$event["title"].'</div></div>';
-                // }
             } else if ($sD == $fD and $sT != $fT) { // NFgg
                 $RESULT .= '<div class="event NFgg" event-id="'.$event["id"].'"><div class="icon"></div><div class="title">'.$sT.' '.$event["title"].'</div></div>';
             } else if ($sD != $fD and $sT != $fT) { // NFggs 
-                // $diff = (substr($fD, 8) - substr($sD, 8));
                 $RESULT .= '<div class="event NFggs" event-id="'.$event["id"].'"><div class="title">'.$sT.' '.$event["title"].'</div></div>';
-                // for ($i = 0; $i < $diff; $i++) {
-                //     $last = $i==0 ? 'last-evt' : '';
-                //     $RESULT .= '<div class="event NFggs end-evt '.$last.'"><div class="title">'.$event["title"].'</div></div>';
-                // }
             }
         } else { // END EVENT
-            // ricerca del real event associato all' end event 
             $q = "SELECT * FROM `event` WHERE `event`.`real_evt_id` IS NULL and `event`.`id`= ".$event['real_evt_id'].";";
             $s = $db->prepare($q);
             $s->execute();
@@ -80,9 +66,5 @@ if (sizeof($rtrn)) {
         }
         $RESULT .= "---";
     }
-    // if ($limit == 2 && $count > 3) {
-    //     $RESULT .= '<div class="other-evt">Altri '.$count-$limit.'</div>';
-    //     $RESULT .= "---";
-    // }
     echo $RESULT;
 }

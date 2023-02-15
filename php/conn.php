@@ -6,4 +6,3 @@ try {
     echo 'Error message: '.$th;
     die();
 }
-?>
