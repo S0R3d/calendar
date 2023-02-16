@@ -350,8 +350,8 @@ $(document).ready(function () {
         $(".event-view-container").remove();
       }
       let offset = $(e.target.parentElement).offset();
-      let top = offset.top >= 50 ? Math.round(offset.top) - 50 : 0;
-      let left = offset.left >= 25 ? Math.round(offset.left) - 25 : 0;
+      let top = offset.top >= 50 ? Math.round(offset.top) - 39 : 0;
+      let left = offset.left >= 25 ? Math.round(offset.left) - 23 : 0;
 
       const srcX = '<img src="../calendar/img/x.svg">';
 
@@ -462,4 +462,6 @@ $(document).ready(function () {
       });
     }
   });
+
+  document.addEventListener("resize", () => {});
 });

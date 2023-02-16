@@ -37,6 +37,8 @@ footer {
     height: 45px;
 
     font-size: 20px;
+    /* font-size: 1.25rem; */
+    /* font-size: 1.4vw; */
 }
 
 header>*,
@@ -361,7 +363,15 @@ input:focus:invalid {
 .event-view-container {
     display: none;
     position: absolute;
+    /* 
+    top: 16.65%;
+    left: 55.55%;
+
+    top: 16.65vh;
+    left: 55.55vw;
+    */
     width: 250px;
+    min-width: 160px;
     height: auto;
 
     border-radius: 8px;
