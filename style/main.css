@@ -255,6 +255,7 @@ input:focus:invalid {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    gap: 5px;
 }
 
 .event>.icon {
@@ -263,6 +264,14 @@ input:focus:invalid {
     height: 10px;
     background-color: green;
     display: inline-block;
+    margin-right: auto;
+    margin-left: 4px;
+}
+
+.event>.hours {
+    font-size: 13px;
+    padding-top: 1px;
+    margin-right: auto;
 }
 
 .transparency .event>.icon {
@@ -274,7 +283,7 @@ input:focus:invalid {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
-    padding-top: 1px;
+    /* padding-top: 1px; */
 }
 
 .event.Fgg {
@@ -316,6 +325,25 @@ input:focus:invalid {
     border-radius: 0;
 }
 
+.event.NFggs {
+    /* padding: 3px 0; */
+}
+
+.event.NFggs>.hours {
+    margin-left: 5px;
+}
+
+.event.NFggs>.title {
+    width: 75%;
+    padding: 0;
+    /* padding-left: 7px; */
+    text-align: left;
+}
+
+.event.NFggs.end-evt>.title {
+    padding: 0;
+    text-align: center;
+}
 
 .event.NFgg {
     border: 2px solid var(--bg-event);
@@ -324,11 +352,9 @@ input:focus:invalid {
 }
 
 .event.NFgg>.title {
-    width: 94%;
-}
-
-.event.NFggs {
-    padding: 3px 0;
+    width: 73%;
+    padding: 0;
+    text-align: left;
 }
 
 .event.end-evt.last-evt {
@@ -382,12 +408,18 @@ input:focus:invalid {
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
+.event-view-container .event {
+    gap: 0;
+}
+
 .event-view-container .event>.title {
     width: 93%;
+    padding-left: 13px;
 }
 
 .event-view-container .event.NFgg>.title {
-    width: 88%;
+    width: 60%;
+    padding-left: 10px;
 }
 
 .event-view {
@@ -432,13 +464,15 @@ input:focus:invalid {
 }
 
 .remove-evt {
-    display: flex;
+    display: inline-block;
+    /* display: inline-flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
 
     width: 16px;
     height: 100%;
+    margin-left: auto;
 }
 
 .remove-evt:hover {
